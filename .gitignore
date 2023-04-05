@@ -19,3 +19,5 @@
 *.pcapng
 
 /Java - netcat UDP/Java - netcat UDP.iml
+/Java - netcat TCP/Java - netcat TCP.iml
+/Java - netcat UDP/Java - netcat.iml
