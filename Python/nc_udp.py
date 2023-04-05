@@ -7,7 +7,7 @@ def receiveLines(port):
         while True:
             line, c_address = s_sock.recvfrom(4096)
             line = line.decode().rstrip()
-            print('Message <{0}> received from client {1}'.format(repr(line),c_address))
+            print(f'Message <{repr(line)}> received from client {c_address}')
             if line.lower() == 'stop':
                 break
 
@@ -21,7 +21,8 @@ def sendLines(host,port):
 
 def main():
     if len(sys.argv) != 3:
-        print("Usage: \"{0} -l <port>\" or \"{0} <ip> <port>\"".format(sys.argv[0]))
+        name = sys.argv[0]
+        print(f"Usage: \"{name} -l <port>\" or \"{name} <ip> <port>\"")
         sys.exit()
     port = int(sys.argv[2])
     if sys.argv[1].lower() == '-l':
