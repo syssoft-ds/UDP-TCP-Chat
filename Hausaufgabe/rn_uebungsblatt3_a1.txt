@@ -1,0 +1,41 @@
+Roman Schander
+1598510
+
+Rechnernetze Übungsblatt 3
+
+Aufgabe 1
+
+Beim Betrachten der Wireshark Pakete für die TCP-Variante (nc_tcp_packets.txt) kann folgendes beobachtet werden:
+Es wurde bereits ein nc_tcp Server mit dem Befehl "python3 nc_tcp.py -l 12345" gestartet sowie Wireshark mit Capture-Filter "tcp && ip.addr == 192.168.178.45" konfiguriert.
+
+1. Verbindungsaufbau
+    Während sich ein Client versucht mit dem Server über "python3 nc_tcp.py 192.168.178.45 12345" zu verbinden
+    ist in Wireshark zu sehen, dass ein TCP-Paket mit SYN-Flag an die entsprechende Portnummer gesendet wird (Frame 3).
+    Dies wird vom Empfänger beantwortet mit einem TCP-Paket welches die SYN+ACK Flags gesetzt hat (Frame 3)
+    Anschließend wird ein weiteres Paket vom Sender mit dem ACK Flag gesendet (Frame 5) und der Verbindungsaufbau
+    der beiden Kommunikationsteilnehmer ist erfolgt.
+
+    Der Verbindungsaufbau über das TCP-Protokoll wird über einen 3-Wege-Handschlag ausgeführt welcher wie oben beschrieben
+    durchgeführt wird.
+
+2. Datenübertragen
+    Wenn es zur Datenübertragung kommt wird vom Sender ein Paket mit den PSH+ACK Flags gesendet (Frame 9).
+    Außerdem enthält das TCP-Paket nun auch die gesendeten Daten "Hallo test 123"
+    Im Anschluss erwartet der Empfänger erneut ein TCP-Paket mit der ACK-Flag welches gewehrleistet, dass die Daten
+    erfolgreich übertragen wurden. In diesem Fall wurde solch ein Paket im Frame 10 gesendet.
+
+3. Verbindungstrennung
+    Wenn die TCP-Verbindung getrennt werden soll, wird zunächst ein Paket mit den FIN+ACK Flags an den Empfänger gesendet (Frame 23)
+    Es wird erneut ein ACK Paket erwartet und die Verbindung wird, wie zwischen den Kommunikationsteilnehmer vereinbart, geschlossen.
+
+Die Netcat-UDP Variante wird analog zur TCP Variante gestartet und mit dem Capture-Filter "udp && ip.addr == 192.168.178.45" aufgezeichnet. Die
+aufgezeichneten Pakete befinden sich in nc_udp_packets.txt.
+
+Der größte Unterschied zwischen den beiden Protokollen ist, dass für die UDP Variante keine Verbindung bestehen muss, damit
+die Pakte zwischen den kommunizierenden Rechnern übertragen werden können.
+
+Wenn Paktete versendet werden, sind diese ganz einfach im Wireshark Capture zu entnehmen (Frames: 11, 14, 17, 19)
+
+Eine weitere Besonderheit ist, dass Pakete weiterhin versendet werden können, selbst wenn der Empfänger nicht mehr verfügbar sind.
+Ausschlaggeben dafür sind die eingefangenen Frames 18 und 20, welche nicht Teil des ICMP Protokolls sind und wiedergeben, dass die Zieladresse
+nicht verfügbar ist.

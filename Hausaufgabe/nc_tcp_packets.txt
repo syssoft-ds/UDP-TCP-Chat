@@ -1,0 +1,84 @@
+No.     Time           Source                Destination           Protocol Length Info
+      3 4.416246       192.168.178.45        192.168.178.45        TCP      68     55336 → 12345 [SYN] Seq=0 Win=65535 Len=0 MSS=16344 WS=64 TSval=1330160435 TSecr=0 SACK_PERM
+
+Frame 3: 68 bytes on wire (544 bits), 68 bytes captured (544 bits) on interface lo0, id 0
+Null/Loopback
+Internet Protocol Version 4, Src: 192.168.178.45, Dst: 192.168.178.45
+Transmission Control Protocol, Src Port: 55336, Dst Port: 12345, Seq: 0, Len: 0
+
+No.     Time           Source                Destination           Protocol Length Info
+      4 4.416373       192.168.178.45        192.168.178.45        TCP      68     12345 → 55336 [SYN, ACK] Seq=0 Ack=1 Win=65535 Len=0 MSS=16344 WS=64 TSval=2824852899 TSecr=1330160435 SACK_PERM
+
+Frame 4: 68 bytes on wire (544 bits), 68 bytes captured (544 bits) on interface lo0, id 0
+Null/Loopback
+Internet Protocol Version 4, Src: 192.168.178.45, Dst: 192.168.178.45
+Transmission Control Protocol, Src Port: 12345, Dst Port: 55336, Seq: 0, Ack: 1, Len: 0
+
+No.     Time           Source                Destination           Protocol Length Info
+      5 4.416389       192.168.178.45        192.168.178.45        TCP      56     55336 → 12345 [ACK] Seq=1 Ack=1 Win=408256 Len=0 TSval=1330160435 TSecr=2824852899
+
+Frame 5: 56 bytes on wire (448 bits), 56 bytes captured (448 bits) on interface lo0, id 0
+Null/Loopback
+Internet Protocol Version 4, Src: 192.168.178.45, Dst: 192.168.178.45
+Transmission Control Protocol, Src Port: 55336, Dst Port: 12345, Seq: 1, Ack: 1, Len: 0
+
+No.     Time           Source                Destination           Protocol Length Info
+      6 4.416399       192.168.178.45        192.168.178.45        TCP      56     [TCP Window Update] 12345 → 55336 [ACK] Seq=1 Ack=1 Win=408256 Len=0 TSval=2824852899 TSecr=1330160435
+
+Frame 6: 56 bytes on wire (448 bits), 56 bytes captured (448 bits) on interface lo0, id 0
+Null/Loopback
+Internet Protocol Version 4, Src: 192.168.178.45, Dst: 192.168.178.45
+Transmission Control Protocol, Src Port: 12345, Dst Port: 55336, Seq: 1, Ack: 1, Len: 0
+
+No.     Time           Source                Destination           Protocol Length Info
+      9 27.442706      192.168.178.45        192.168.178.45        TCP      70     55336 → 12345 [PSH, ACK] Seq=1 Ack=1 Win=408256 Len=14 TSval=1330183462 TSecr=2824852899
+
+Frame 9: 70 bytes on wire (560 bits), 70 bytes captured (560 bits) on interface lo0, id 0
+Null/Loopback
+Internet Protocol Version 4, Src: 192.168.178.45, Dst: 192.168.178.45
+Transmission Control Protocol, Src Port: 55336, Dst Port: 12345, Seq: 1, Ack: 1, Len: 14
+Data (14 bytes)
+
+0000  48 61 6c 6c 6f 20 74 65 73 74 20 31 32 33         Hallo test 123
+    Data: 48616c6c6f207465737420313233
+    [Length: 14]
+
+No.     Time           Source                Destination           Protocol Length Info
+     10 27.442755      192.168.178.45        192.168.178.45        TCP      56     12345 → 55336 [ACK] Seq=1 Ack=15 Win=408256 Len=0 TSval=2824875926 TSecr=1330183462
+
+Frame 10: 56 bytes on wire (448 bits), 56 bytes captured (448 bits) on interface lo0, id 0
+Null/Loopback
+Internet Protocol Version 4, Src: 192.168.178.45, Dst: 192.168.178.45
+Transmission Control Protocol, Src Port: 12345, Dst Port: 55336, Seq: 1, Ack: 15, Len: 0
+
+No.     Time           Source                Destination           Protocol Length Info
+     21 75.791681      192.168.178.45        192.168.178.45        TCP      56     55336 → 12345 [FIN, ACK] Seq=15 Ack=1 Win=408256 Len=0 TSval=1330231812 TSecr=2824875926
+
+Frame 21: 56 bytes on wire (448 bits), 56 bytes captured (448 bits) on interface lo0, id 0
+Null/Loopback
+Internet Protocol Version 4, Src: 192.168.178.45, Dst: 192.168.178.45
+Transmission Control Protocol, Src Port: 55336, Dst Port: 12345, Seq: 15, Ack: 1, Len: 0
+
+No.     Time           Source                Destination           Protocol Length Info
+     22 75.791742      192.168.178.45        192.168.178.45        TCP      56     12345 → 55336 [ACK] Seq=1 Ack=16 Win=408256 Len=0 TSval=2824924276 TSecr=1330231812
+
+Frame 22: 56 bytes on wire (448 bits), 56 bytes captured (448 bits) on interface lo0, id 0
+Null/Loopback
+Internet Protocol Version 4, Src: 192.168.178.45, Dst: 192.168.178.45
+Transmission Control Protocol, Src Port: 12345, Dst Port: 55336, Seq: 1, Ack: 16, Len: 0
+
+No.     Time           Source                Destination           Protocol Length Info
+     23 80.530176      192.168.178.45        192.168.178.45        TCP      56     12345 → 55336 [FIN, ACK] Seq=1 Ack=16 Win=408256 Len=0 TSval=2824929015 TSecr=1330231812
+
+Frame 23: 56 bytes on wire (448 bits), 56 bytes captured (448 bits) on interface lo0, id 0
+Null/Loopback
+Internet Protocol Version 4, Src: 192.168.178.45, Dst: 192.168.178.45
+Transmission Control Protocol, Src Port: 12345, Dst Port: 55336, Seq: 1, Ack: 16, Len: 0
+
+No.     Time           Source                Destination           Protocol Length Info
+     24 80.530244      192.168.178.45        192.168.178.45        TCP      56     55336 → 12345 [ACK] Seq=16 Ack=2 Win=408256 Len=0 TSval=1330236551 TSecr=2824929015
+
+Frame 24: 56 bytes on wire (448 bits), 56 bytes captured (448 bits) on interface lo0, id 0
+Null/Loopback
+Internet Protocol Version 4, Src: 192.168.178.45, Dst: 192.168.178.45
+Transmission Control Protocol, Src Port: 55336, Dst Port: 12345, Seq: 16, Ack: 2, Len: 0
