@@ -1,0 +1,23 @@
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+**/out/
+**/.idea/
+
+*.pcapng
+
+/Java - netcat UDP/Java - netcat UDP.iml
+/Java - netcat TCP/Java - netcat TCP.iml
+/Java - netcat UDP/Java - netcat.iml
