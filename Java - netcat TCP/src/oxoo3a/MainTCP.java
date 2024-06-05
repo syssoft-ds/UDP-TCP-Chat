@@ -8,7 +8,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Main {
+public class MainTCP {
 
     private static void fatal ( String comment ) {
         System.out.println(comment);
