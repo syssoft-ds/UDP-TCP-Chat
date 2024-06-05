@@ -23,14 +23,15 @@ public class chat_udp {
             fatal("Usage: \"chat <port> <name>\"");
         myPort = Integer.parseInt(args[0]);
         myName = args[1];
+        DatagramSocket s = new DatagramSocket(myPort);
         new Thread(() -> {
             try{
-            listenAndTalk();
+            listenAndTalk(s);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }).start();
-        connectAndTalk();
+        connectAndTalk(s);
     }
 
     private static final int packetSize = 4096;
@@ -47,8 +48,7 @@ public class chat_udp {
     // ************************************************************************
     // listenAndTalk
     // ************************************************************************
-    private static void listenAndTalk () throws IOException  {
-        DatagramSocket s = new DatagramSocket(myPort);
+    private static void listenAndTalk (DatagramSocket s) throws IOException  {
         s.connect(InetAddress.getByName("8.8.8.8"), 10002);
         myIp = s.getLocalAddress().getHostAddress();
         s.disconnect();
@@ -78,9 +78,7 @@ public class chat_udp {
     // ************************************************************************
     // connectAndTalk
     // ************************************************************************
-    private static void connectAndTalk () throws IOException {
-        DatagramSocket s = new DatagramSocket();
-        //myIp = s.getLocalAddress().getHostAddress();
+    private static void connectAndTalk (DatagramSocket s) throws IOException {
         byte[] buffer = new byte[packetSize];
         String line;
         do {
