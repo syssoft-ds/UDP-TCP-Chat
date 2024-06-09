@@ -1,0 +1,19 @@
+Aufgabe 1
+
+Aufzeichnungen, die ich beim Versenden von Nachrichten via dem TCP-Programm erhalten habe sahen so aus:
+E6ñ@Ê¡09ÍACuÂõÁPÿç®Test Message
+
+Bei dem UDP Counterpart:
+E(rÓl0:È»Test-Message
+
+
+Zudem geht bei dem TCP-Programm immer auch eine Aufzeichnung vom Server aus, also 2 pro verschickter Nachricht. Bei UDP wird nur eine Nachricht aufgezeichnet, nämlich die, die vom Sender ausgeht. Also dem Client.
+
+Dies macht Sinn, da es sich ja bei TCP um ein verbindungsorientiertes Protokoll handelt. Die 2 aufgezeichneten Nachrichten sind also Teil des "dreifachen Handshakes"; Spezifisch wahrscheinlich die der PUSH-ACKNOWLEDGE und ACKNOWLEDGE. Über TCP werden so zwischen Client und Server eine Verbindung aufgebaut, wobei der Server die Nachricht dem Client bestätigt, die ebenfalls als Nachricht in Wireshark erscheint. UDP sendet die Daten ohne die Notwendigkeit einer Antwort, und der Server empfängt die Daten passiv, ohne darauf zu antworten, es sei denn, es ist ausdrücklich im Code vorgesehen, was hier bei netcat ja nicht der Fall ist. 
+
+
+Aufgabe 2
+
+Komme beim Code nicht weiter
+
+...
