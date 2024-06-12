@@ -19,10 +19,10 @@ public class UDP_Chat {
         System.exit(-1);
     }
 
-    public static boolean isIP(String ip) { // Checks if String is valid IPv4 address
-        String[] parts = ip.split("\\."); // Split by dot
-        if (parts.length != 4) { return false; } // Must be 4 chunks
-        for (String p : parts) { // Check if numbers are valid
+    public static boolean isIP(String ip) {
+        String[] parts = ip.split("\\.");
+        if (parts.length != 4) { return false; }
+        for (String p : parts) {
             try {
                 int number = Integer.parseInt(p);
                 if (number < 0 || number > 255) { return false; }
@@ -41,7 +41,6 @@ public class UDP_Chat {
 
     public static void main(String[] args) {
 
-        // Handling arguments, checking validity
         if (args.length != 2) {
             fatal("Arguments: \"<port number> <client name>\"");
         }
@@ -53,17 +52,16 @@ public class UDP_Chat {
         name = args[1];
 
         System.out.println(name + " (Port: " + port + ") is here, looking around.\nUse \"register <ip address> <port number>\" to contact another client.\nUse \"send <registered client name> <message>\" to message them.\nUse \"quit\" to exit program.");
-        // Start a new thread to listen for messages
+
         new Thread(() -> receiveLines(port)).start();
 
-        // Main thread continues to process user input
-        try(BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) { // closes automatically
+        try(BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
             String input;
             while (!(input = br.readLine()).equalsIgnoreCase("quit")) {
                 String[] parts = input.split(" ");
-                if (parts[0].equalsIgnoreCase("register") && parts.length == 3 && isPort(parts[2])) {
-                    register(parts[1], Integer.parseInt(parts[2]));
-                } else if (parts[0].equalsIgnoreCase("send")) {
+                if (parts[0].equalsIgnoreCase("register") && parts.length == 4 && isPort(parts[3])) {
+                    register(parts[1], parts[2], Integer.parseInt(parts[3]));
+                } else if (parts[0].equalsIgnoreCase("send") && parts.length >= 3) {
                     String receiver = parts[1];
                     ClientInfo receiverInfo = clients.get(receiver);
                     if (receiverInfo != null) {
@@ -86,20 +84,19 @@ public class UDP_Chat {
     private static final int packetSize = 4096;
 
     private static void receiveLines(int port) {
-        try(DatagramSocket s = new DatagramSocket(port)) { // closes automatically
+        try(DatagramSocket s = new DatagramSocket(port)) {
             byte[] buffer = new byte[packetSize];
             String line;
             do {
                 DatagramPacket p = new DatagramPacket(buffer, buffer.length);
                 s.receive(p);
                 line = new String(buffer, 0, p.getLength(), StandardCharsets.UTF_8);
-                if (line.startsWith("Hello, this is ")) { // Register phrases
+                if (line.startsWith("Hello, this is ")) {
                     String[] parts = line.split(", ");
-                    // saving for the important data
                     String name = parts[1].split(" ")[2];
                     String ip = parts[2].split(" ")[4];
                     String clientPortString = parts[3].split(" ")[4];
-                    if (isIP(ip) && isPort(clientPortString)) { // validating
+                    if (isIP(ip) && isPort(clientPortString)) {
                         int clientPort = Integer.parseInt(clientPortString);
                         clients.put(name, new ClientInfo(ip, clientPort));
                     } else {
@@ -114,7 +111,7 @@ public class UDP_Chat {
     }
 
     private static void sendLines(String friend, int friends_port, String message) {
-        try (DatagramSocket s = new DatagramSocket()) { // closes automatically
+        try (DatagramSocket s = new DatagramSocket()) {
             InetAddress ip = InetAddress.getByName(friend);
             byte[] buffer = message.getBytes(StandardCharsets.UTF_8);
             DatagramPacket p = new DatagramPacket(buffer, buffer.length, ip, friends_port);
@@ -125,11 +122,11 @@ public class UDP_Chat {
         }
     }
 
-    private static void register(String friend, int friends_port) {
+    private static void register(String friend, String ip, int friends_port) {
         try {
-            String ip = InetAddress.getLocalHost().getHostAddress();
-            String message = String.format("Hello, this is %s, my IPv4 address is %s, my port number is %d, and I am thrilled to talk to you.", name, ip, UDP_Chat.port);
-            sendLines(friend, friends_port, message);
+            String localIp = InetAddress.getLocalHost().getHostAddress();
+            String message = String.format("Hello, this is %s, my IPv4 address is %s, my port number is %d, and I am thrilled to talk to you.", name, localIp, UDP_Chat.port);
+            sendLines(ip, friends_port, message);
         } catch (UnknownHostException e) {
             System.err.println("Unable to find client \"" + friend + "\".");
         }
