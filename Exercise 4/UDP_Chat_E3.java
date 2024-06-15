@@ -1,5 +1,3 @@
-package oxoo2a;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -9,7 +7,7 @@ import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Main {
+public class UDP_Chat_E3{
 
 
     private static void fatal ( String comment ) {
