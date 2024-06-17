@@ -1,0 +1,9 @@
+Die 103.161.122.83 (binär: 01100111.10100001.01111010.01010011) ist die IP-Adresse. Die /18 gibt dabei an, wo die Trennung zwischen Netz- und Hostanteil der Adresse gesetzt ist.
+Damit kann man die Subnetzmaske ermitteln, indem man die ersten 18 Bit, die für die Netzwerkadresse zur Verfügung steht, als 1 darstellt und die restlichen 14 Bit des Hostanteils als 0. 
+Subnetzmaske: 11111111.11111111.11000000.00000000 (dezimal: 255.255.192.0.)
+Durch eine and Verknüpfung mit der IP-Adresse erhält man die Netzwerkadresse.
+Netzwerkadresse: 01100111.10100001.01000000.00000000 (dezimal: 103.161.64.0)
+Bei der Broadcatsadresse werden die Bits des Hostanteils auf 1 gesetzt.
+Broadcastadresse: 01100111.10100001.01111111.11111111 (dezimal: 103.161.127.255)
+
+Für 103.161.193.83/18 (binär: 01100111.10100001.11000001.01010011) erhält man dieselbe Subnetzmaske und damit die Netzwerkadresse 01100111.10100001.11000000.00000000 (dezimal: 103.161.192.0). Dies ist eine andere Netzwerkadresse als zuvor und somit liegen die zugehörigen Geräte in unterschiedlichen Netzwerken.

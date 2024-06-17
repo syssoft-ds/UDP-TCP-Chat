@@ -1,0 +1,38 @@
+Mit Wireshark wurde ein IPv4 Paket eingefangen mit folgendem Header (Hexadezimal): 
+45 00 01 97 2a c7 40 00 ff 11 fb 96 c0 a8 b2 53 e0 00 00 fb
+Damit handelt es sich, wie in der Vorlesung angesprochen um einen 20 Byte Header. Die Bedeutung der einzelnen Abschnitte werden im Folgenden von links nach rechts dargestellt.
+4: IP Version
+5: Header length
+00: Type of service
+01 97: Total length
+2a c7: identifictaion
+4: (ersten drei Bits -> 010) flags (hier: keine Fragmentierung)
+40 00: (restlichen 13 Bits) Fragment offset
+ff: Time to live
+11: protocol (UDP)
+fb 96: Header checksum
+c0 a8 b2 53: source address
+e0 00 00 fb: destination address
+
+Analog für ein UDP Paket:
+d6 6c e5 f2 00 57 58 a0
+d6 6c: source port
+e5 f2: destination port
+00 57: length
+58 a0: checksum
+Anschließend daran UDP payload/ data
+
+Analog für ein TCP Paket:
+01 bb 9b bf 48 aa 03 00 f7 8f 9b 85 50 10 01 f5 d5 07 00 00
+01 bb: source port
+9b bf: destination port
+48 aa 03 00: sequence number
+f7 8f 9b 85: acknowledgment number
+5: header length
+0 10: flags
+01 f5: window
+d5 07: checksum
+00 00: Urgent pointer
+Anschließend daran TCP payload
+
+
