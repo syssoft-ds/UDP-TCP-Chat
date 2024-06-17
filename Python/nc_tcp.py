@@ -7,6 +7,11 @@ import regex as re
 #Server 
 userlist = {} #list of users with their ip and port
 CMDREGEX = re.compile(r'^[A-Z_]{3,}=')
+#Questions dictionary. str -> function(socket): str
+questions = {
+    'antwort auf alles' : "42",
+    'wie geht es dir' : "Ich bin ein Server und habe keine Gefühle..."
+}
 
 #Client
 USERNAME = None
@@ -51,18 +56,35 @@ def serveClient(c_sock, c_address):
                     #MSG=<sender>;<reciever>;<msg> -> Sends message to reciever
                     sender, reciever = cmd[1].split(";")[0], cmd[1].split(";")[1]
                     msg = cmd[1].split(";")[2]
-                    
-                    if reciever in userlist:
-                        try:
-                            reciever_sock = userlist[reciever][2]
-                            reciever_sock.sendall(f'{sender}: {msg}'.encode())
-                        except Exception:
-                            print(f'Error sending message to {reciever}\n{Exception}')
-                    print(f'Message <{repr(msg)}> received from client {sender}, sending to {reciever}')         
+                    sendmsg(sender, reciever, msg)
+                    print(f'Message <{repr(msg)}> received from client {sender}, sending to {reciever}')     
+                elif cmd[0] == 'ASK':
+                    #ASK=<sender>;<question> -> Sends answer to question according to question dictionary
+                    sender, qstn = cmd[1].split(";")[0], cmd[1].split(";")[1].lower().replace("?","")
+                    if qstn in questions:
+                        ans = questions[qstn]
+                        c_sock.sendall(f'{sender}: {ans}'.encode())
+                    else:
+                        c_sock.sendall(f'{sender}: There is no answer for your question. See:\n{list(questions.keys())}'.encode())    
             else:
                 print(f'Unknown interaction <{repr(line)}> received from client {c_address}')
             if line.lower() == 'stop':
                 break
+
+def sendmsg(sender, reciever, msg):
+    #Send message to reciever or broadcast to all users
+    try:
+        if reciever == 'ALL':
+            for user in userlist:
+                if user != sender:
+                    userlist[user][2].sendall(f'{sender}: {msg}'.encode())
+        else:
+            if reciever in userlist:
+                reciever_sock = userlist[reciever][2]
+                reciever_sock.sendall(f'{sender}: {msg}'.encode())                    
+    except Exception:
+        print(f'Error sending message to {reciever}\n{Exception}')
+        
 
 def client(host,port):
     global USERNAME, NETINFO
@@ -82,7 +104,7 @@ def client(host,port):
                 cmd = input("< ").split(" ")
                 if cmd[0] == 'send':
                     if len(cmd) < 3:
-                        print("Usage: send <name> <message>")
+                        print("Usage: send <name | 'all'> <message>")
                         continue
                     msg = ' '.join(cmd[2:])
                     c_sock.sendall(f'MSG={USERNAME};{cmd[1]};{msg}'.encode())
@@ -90,6 +112,9 @@ def client(host,port):
                     c_sock.sendall('LIST='.encode())
                 elif cmd[0] == 'help':
                     print("Available commands: list, send, help, exit")
+                elif cmd[0] == 'ask':
+                    qstn = ' '.join(cmd[1:])
+                    c_sock.sendall(f'ASK={USERNAME};{qstn}'.encode())
                 elif cmd[0] == 'exit':
                     sys.exit()
                 else:
