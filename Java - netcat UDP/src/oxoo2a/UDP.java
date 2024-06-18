@@ -9,7 +9,7 @@ import java.net.InetAddress;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class Main {
+public class UDP {
 
     private static HashMap<String, Peer> peers = new HashMap<>();
 
