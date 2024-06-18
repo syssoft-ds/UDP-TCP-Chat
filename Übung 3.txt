@@ -1,0 +1,73 @@
+Aufgabe 1:
+Gemeinsamkeiten:
+
+Ziel: Nachrichtenaustausch:
+- Beide Programme dienen dem Nachrichtenaustausch zwischen einem Client und einem Server.
+- In beiden Fällen wird die Nachricht vom Client gesendet und vom Server empfangen und verarbeitet. 
+Verwendung von Ports:
+- Beide Programme binden sich an bestimmte Ports, um Daten zu senden und zu empfangen.
+Stop-Kommando:
+- Beide Programme stoppen die laufende Kommunikation, wenn das Schlüsselwort "stop" gesendet wird. 
+
+Unterschiede:
+Protokoll:
+-UDP: - erfordert keinen Verbindungsaufbau. Nachrichten werden einfach gesendet. 
+	Keine Garantie für die Reihenfolge oder Integrität der Daten. 
+	Paket 1: Client -> Server: UDP-Daten
+-TCP: - sogenannte Handshake-Prozedur 
+	Paket 1: Client -> Server: SYN
+	Paket 2: Server -> Client: SYN-ACK
+	Paket 3: Client -> Server: ACK
+	-> sequenzielle Datenübertragung: Korrekte Reihenfolge & erneute Übertragung verlorener Pakete. 
+	Paket 4: Client -> Server: Daten
+	Paket 5: Server -> Client: ACK
+	- Beendet Verbindung mit Vier-Wege-Abbau
+	Paket 6: Client -> Server: FIN
+	Paket 7: Server -> Client: FIN-ACK
+	Paket 8: Client -> Server: ACK
+
+--------------------------------------------------------------------------------------------------------
+
+Aufgabe 2: udpchat.py
+Vorgehensweise:
+1. Starten Sie die erste Instanz im Empfangsmodus:
+	python udpchat.py instance1 -l 12345
+2. Starten Sie die zweite Instanz im Empfangsmodus:
+	python udpchat.py instance2 -l 12346
+3. In der zweiten Instanz registrieren Sie sich bei der ersten:
+	register instance2 127.0.0.1 12345
+4. Senden Sie eine Nachricht von der zweiten Instanz zur ersten:
+	send instance1 Hello, this is instance2
+
+Ausgabe instance1:
+Listening for messages on port 12345
+Registered instance2 with IP 127.0.0.1 and port 12346
+Current clients: {'instance2': ('127.0.0.1', 12346)}
+Received message: 'Hello, this is instance2' from instance2
+
+Ausgabe instance2:
+Listening for messages on port 12346
+register instance2 127.0.0.1 12345
+Registered instance1 with IP 127.0.0.1 and port 12345
+Current clients: {'instance1': ('127.0.0.1', 12345)}
+send instance1 Hello, this is instance2
+
+--------------------------------------------------------------------------------------------------------
+
+Aufgabe 3: tcpchat.py
+1. Server starten:
+	python tcpchat.py server 12345
+2. Ersten Client starten:
+	python tcpchat.py client 127.0.0.1 12345 instance1 54321
+3. Zweiten Client starten:
+	python tcpchat.py client 127.0.0.1 12345 instance2 42424
+4. Anweisungen folgen und Emfpänger eingeben, dann die Nachricht
+
+--------------------------------------------------------------------------------------------------------
+
+Aufgabe 4: Manchester-Codierung
+
+Clock:		10|10|10|10|10|10|10
+Bit-Folge:	10|01|01|00|11|10|11
+nach G.E.Thomas:11|00|00|01|10|11|10
+nach IEE 802.3:	00|11|11|10|01|00|01
