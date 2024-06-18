@@ -1,0 +1,14 @@
+Beide Programme startet man auf gleiche Art. Man öffnet zuerst mit -l als Argument den Serversocket und kann dann mithilfe
+der angegebenen IP einen Client starten, der Pakete an diesen senden kann.
+Sendet man stop, dann wird der Client geschlossen, bei der UDP Variante wird zusätzlich auch der Server geschlossen.
+
+Bei udp wird das Packet an den Port gesendet. Der Sender kriegt jedoch keine Rückmeldung darüber, ob das Packet angekommen ist.
+
+Bei tcp ist dies anders. Hier wird zuerst versucht eine Verbindung aufzubauen mit dem "dreistufigen Handshake".
+Dieser Handshake besteht aus den Schritten: SYN, SYN-ACK und ACK:
+Der Client sendet also zuerst ein TCP-Packet mit dem SYN-Tag.
+Wenn der Server das Packet empfangen hat, sendet er als Antwort ein Packet mit dem SYN- und ACK-Tag.
+Empfängt der Client die Antwort, dann bestätigt er dies wiederum mit einem Packet, der nur den ACK-Tag enthält.
+Erst dann wird das eigentliche Packet versendet.
+
+SYN steht heir für Synchronisation und ACK für Acknowledge.
