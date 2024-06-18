@@ -1,0 +1,7 @@
+UDP:
+Durch Nachrichten, die direkt an den jeweiligen Port geschickt werden (hier: registration Nachrichten) ist es möglich zu kommunizieren. Jedoch wird die Registrierung nicht durchgeführt, sodass man anschließend durch Angabe des Namens (bspw. send Bob hi) keine Nachricht verschicken kann.
+Dies kann an der unterschiedlichen Arbeitsweise (Semantik) der Porgramme liegen. Um dies zu lösen müsste man sich auf ein einheitliches Format einigen und dies in beiden Implementierungen verwenden.
+
+TCP:
+Ich konnte die Musterlösung leider nicht ausführen und hatte daher Schwierigkeiten zwei verschiedene Programme zu testen.
+Allerdings vermute ich hier ähnliche Probleme wie bei dem UDP-Chat. Daher ist der Lösungsansatz auch gleich.
