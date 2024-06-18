@@ -5,8 +5,8 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map;
+import java.net.SocketTimeoutException;
+import java.util.*;
 
 public class TCP_Chat_Server {
     private static final int port = 1444;
@@ -48,7 +48,7 @@ public class TCP_Chat_Server {
 
             String line;
             while ((line = clientInfo.in.readLine()) != null) {
-                String[] parts = line.split(" ", 3);
+                String[] parts = line.split(" ");
                 if (parts[0].equalsIgnoreCase("register") && parts.length == 2) {
                     clientName = parts[1];
                     if (clients.containsKey(clientName)) {
@@ -62,6 +62,15 @@ public class TCP_Chat_Server {
                     String recipient = parts[1];
                     String message = parts[2];
                     sendMessage(clientName, recipient, message);
+                } else if (parts[0].equalsIgnoreCase("broadcast") && parts.length > 1) {
+                    String[] msg = Arrays.copyOfRange(parts, 1, parts.length);
+                    String message = "Broadcast from " + clientName + ": " + String.join(" ", msg);
+                    broadcastMessageToAllClients(message);
+                    System.out.println("Broadcast message sent.");
+                } else if (parts[0].equalsIgnoreCase("refreshList")) {
+                    refreshList();
+                    String clientList = String.join(", ", clients.keySet());
+                    clientInfo.out.println("Current clients: " + clientList);
                 } else {
                     clientInfo.out.println("Unknown command.");
                 }
@@ -79,6 +88,25 @@ public class TCP_Chat_Server {
                 recipientInfo.out.println("Message from " + sender + ": " + message);
             } else {
                 System.out.println("Client " + recipient + " not found.");
+            }
+        }
+    }
+
+    public static void broadcastMessageToAllClients(String message) {
+        for (ClientInfo client : clients.values()) {
+            client.out.println(message);
+        }
+    }
+
+    public static void refreshList() {
+        Set<String> clientNames = new HashSet<>(clients.keySet());
+
+        for (String clientName : clientNames) {
+            ClientInfo client = clients.get(clientName);
+
+            if (!client.socket.isConnected() || client.socket.isClosed()) {
+                clients.remove(clientName);
+                System.out.println("Client " + clientName + " removed due to disconnection.");
             }
         }
     }

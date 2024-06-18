@@ -1,0 +1,15 @@
+Aufgabe 2:
+Die Notation 103.161.122.83/18 ist eine IP-Adresse im CIDR-Format (Classless Inter-Domain Routing)
+103.161.122.83 = IP Adresse
+18 = Präfixlänge
+
+Subnetzmaske = 255.255.192.0
+Die Präfixlänge von 18 bedeutet, dass die ersten 18 Bits der IP-Adresse das Netzwerkpräfix bilden und die restlichen Bits für Hostadressen innerhalb dieses Netzwerks verwendet werden
+
+Netzwerkadresse = 103.161.64.0
+Die Netzwerkadresse ist die erste Adresse in einem Netzwerk und wird ermittelt, indem die Host-Bits der IP-Adresse auf 0 gesetzt werden
+
+Broadcastadresse = 103.161.127.255
+Die Broadcastadresse ist die letzte Adresse in einem Netzwerk und wird ermittelt, indem die Host-Bits der IP-Adresse auf 1 gesetzt werden
+
+Liegt 103.161.122.83/18 im selben Netz wie 103.161.193.83/18? Nein
