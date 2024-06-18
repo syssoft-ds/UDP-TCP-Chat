@@ -4,7 +4,7 @@ import java.net.*;
 
 public class TCP_Chat_Client {
     private static String name = "Client1";
-    private static String serverIP = "192.168.178.127";
+    private static String serverIP = "231.255.194.236";
     private static int serverPort = 1444;
 
     private static void fatal(String input) {
