@@ -2,14 +2,14 @@
 
 ## Aufgabe 1: Protokoll-Header
 ### IPv4:
-![image info](./pic/U3A1_TCP_UDP_Wireshark.png)
+![image info](./pic/U4_A1_IPv4.png)
 
 ### UDP:
 
-![image info](./pic/U3A1_TCP_UDP_Wireshark.png)
+![image info](./pic/U4_A1_UDP.png)
 ### TCP:
 
-![image info](./pic/U3A1_TCP_UDP_Wireshark.png)
+![image info](./pic/U4_A1_TCP.png)
 
 
 ## Aufgabe 2: CIDR
@@ -36,7 +36,7 @@ Wegen der /18 folgt, dass die ersten 18 Bits der Subnetzmaske auf 1 gesetzt sind
 
 Die Netzwerkadresse ergibt sich aus der UND-Verknüofung von IP-Adresse und Subnetzmaske:
 
-![image info](./pic/U3A1_TCP_UDP_Wireshark.png)
+![image info](./pic/U4_A2_Netzwerkadresse.png)
 
 Daraus ergibt sich dezimal:  103.161.64.0
 
@@ -55,7 +55,7 @@ Dazu muss die Netzwerkadresse der 2. IP erzeugt werden, also die 2. IP mit derse
 
 #### Verknüpfung:
 
-![image info](./pic/U3A1_TCP_UDP_Wireshark.png)
+![image info](./pic/U4_A2_Netzwerkadresse2.png)
 
 #### Netzwerkadresse für 103.161.193.83/18: 
 
