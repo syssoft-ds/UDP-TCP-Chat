@@ -1,0 +1,28 @@
+103.161.122.83 ist eine spezifische IPv4 Adresse und /18 ist eine Netzmaske die Angibt, wie viele Bits der Adresse 
+das Netzwerkpräfix bilden, in diesem Fall sind es 18 bits.
+Desweiteren bedeutet eine /18 Netzmaske dass die ersten 18 bits auf 1 gesetzt sind also: 1111111.11111111.11000000.00000000
+in dezimal: 255.255.192.0.
+
+Die Netzwerkadresse enthält man, indem man eine logische UND-Verknüpfung zwischen der IP-Adresse und der Subnetzmaske 
+durchführt.
+103.161.122.83 in binärer Form: 01100111.10100001.01111010.01010011
+Subnetzmaske in binärer Form: 11111111.11111111.11000000.00000000
+Netzwerkadresse in binärer Form: 01100111.10100001.01000000.00000000
+In dezimaler Form: 103.161.64.0
+
+Die Broadcast Adresse erhält man wenn man die Netzwerkadresse nimmt und die Host-Bits (die restlichen 14 Bits) auf 1 
+setzt.
+Netzwerkadresse in binärer Form: 01100111.10100001.01000000.00000000
+Broadcastadresse in binärer Form: 01100111.10100001.01111111.11111111
+In dezimaler Form: 103.161.127.255
+
+Prüfen ob 103.161.122.83/18 und 103.161.193.83/18 im selben Netz liegen:
+103.161.193.83 in binärer Form: 01100111.10100001.11000001.01010011
+Subnetzmaske in binärer Form: 11111111.11111111.11000000.00000000
+Netzwerkadresse in binärer Form: 01100111.10100001.11000000.00000000
+In dezimaler Form: 103.161.192.0
+
+Netzwerkadresse von 103.161.122.83/18: 103.161.64.0
+Netzwerkadresse von 103.161.193.83/18: 103.161.192.0
+
+-> da die Netzwerkadressen unterschiedlich sind, liegen die beiden IP adressen nicht im selben Netz.
