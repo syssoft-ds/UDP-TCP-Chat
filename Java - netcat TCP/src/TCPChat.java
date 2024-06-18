@@ -6,7 +6,9 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 // Auch hier hat beim Verstehen und auch ein wenig beim Schreiben ein KI-Assistent geholfen.
 public class TCPChat {
@@ -16,7 +18,8 @@ public class TCPChat {
         System.exit(-1);
     }
 
-    private static Map<String, Socket> clients = new HashMap<>();
+    private static Map<String, Socket> clients = new ConcurrentHashMap<>();
+    private static Map<String, String> predefinedAnswers = new ConcurrentHashMap<>();
 
     // ************************************************************************
     // MAIN
@@ -55,6 +58,10 @@ public class TCPChat {
                 clients.put(name, clientSocket);
             }
             writer.println("Hallo, " + name + "! Mit \"send <name> <message>\" kannst du jetzt jedem anderen Client <name> auf dem Server Nachrichten <message> schicken!");
+            writer.println("Mit \"send all <message>\" kannst du eine Nachricht an alle schicken.");
+            writer.println("Mit \"Getclientlist\" kannst du die Liste aller verbundenen Clients anfordern.");
+            writer.println("Mit \"ask <name> <Frage>\" kannst du vordefinierte Fragen stellen.");
+            writer.println("Mit \"set <Frage> <Antwort>\" kannst du eine vordefinierte Antwort setzen.");
 
             String ganzeNachricht;
             while ((ganzeNachricht = reader.readLine()) != null) {
@@ -65,9 +72,35 @@ public class TCPChat {
                     if (nachrichtenteil.length >= 3) {
                         String empfaenger = nachrichtenteil[1];
                         String textnachricht = nachrichtenteil[2];
-                        versendeNachricht(name, empfaenger, textnachricht, writer);
+                        if (empfaenger.equalsIgnoreCase("all")) {
+                            versendeNachrichtAnAlle(name, textnachricht);
+                        } else {
+                            versendeNachricht(name, empfaenger, textnachricht, writer);
+                        }
                     } else {
-                        writer.println("Nutze \"send <name> <message>\" um Nachrichten zu verschicken.");
+                        writer.println("Nutze \"send <name> <message>\" oder \"send all <message>\" um Nachrichten zu verschicken.");
+                    }
+                } else if (ganzeNachricht.equalsIgnoreCase("Getclientlist")) {
+                    checkInactiveClients();
+                    sendeClientListe(writer);
+                } else if (ganzeNachricht.startsWith("ask ")) {
+                    String[] frageTeil = ganzeNachricht.split(" ", 3);
+                    if (frageTeil.length >= 3) {
+                        String empfaenger = frageTeil[1];
+                        String frage = frageTeil[2];
+                        sendeFrage(name, empfaenger, frage, writer);
+                    } else {
+                        writer.println("Nutze \"ask <name> <Frage>\" um vordefinierte Fragen zu stellen.");
+                    }
+                } else if (ganzeNachricht.startsWith("set ")) {
+                    String[] setTeil = ganzeNachricht.split(" ", 3);
+                    if (setTeil.length >= 3) {
+                        String frage = setTeil[1];
+                        String antwort = setTeil[2];
+                        setzeAntwort(frage, antwort);
+                        writer.println("Antwort für Frage \"" + frage + "\" gesetzt.");
+                    } else {
+                        writer.println("Nutze \"set <Frage> <Antwort>\" um eine vordefinierte Antwort zu setzen.");
                     }
                 }
             }
@@ -76,7 +109,7 @@ public class TCPChat {
             }
             clientSocket.close();
         } catch (IOException e) {
-            System.out.println("IOException: Fehler beim schreiben oder lesen!");
+            System.out.println("IOException: Fehler beim Schreiben oder Lesen!");
             e.printStackTrace();
         }
     }
@@ -99,6 +132,86 @@ public class TCPChat {
         }
     }
 
+    // Übungsblatt 4: Aufgabe 4a (Funktioniert gut):
+    private static void versendeNachrichtAnAlle(String sender, String textnachricht) {
+        synchronized (clients) {
+            for (Map.Entry<String, Socket> entry : clients.entrySet()) {
+                Socket clientSocket = entry.getValue();
+                try {
+                    PrintWriter clientWriter = new PrintWriter(clientSocket.getOutputStream(), true);
+                    clientWriter.println("Nachricht von " + sender + " an alle: " + textnachricht);
+                } catch (IOException e) {
+                    System.out.println("IOException: Nachricht konnte nicht an " + entry.getKey() + " gesendet werden!");
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    // Übungsblatt 4: Aufgabe 4b (Clientliste wird nicht beim Client ausgegeben, Server funktioniert danach nicht mehr, vermutlich Deadlock bei der Überprüfung der Clients):
+    private static void sendeClientListe(PrintWriter writer) {
+        synchronized (clients) {
+            writer.println("Verbunden Clients: " + String.join(", ", clients.keySet()));
+        }
+    }
+
+    private static void checkInactiveClients() {
+        synchronized (clients) {
+            Iterator<Map.Entry<String, Socket>> iterator = clients.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<String, Socket> entry = iterator.next();
+                try {
+                    PrintWriter clientWriter = new PrintWriter(entry.getValue().getOutputStream(), true);
+                    clientWriter.println("Ping");
+                    BufferedReader clientReader = new BufferedReader(new InputStreamReader(entry.getValue().getInputStream()));
+                    if (!clientReader.readLine().equals("Pong")) {
+                        entry.getValue().close();
+                        iterator.remove();
+                    }
+                } catch (IOException e) {
+                    try {
+                        entry.getValue().close();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                    iterator.remove();
+                }
+            }
+        }
+    }
+
+    // Übungsblatt 4: Aufgabe 4c (Funktioniert theoretisch mit allen Fragen, solange in der Frage kein Leerzeichen steht, Leider kommt keine Antwort auf die Frage zurück):
+    private static void sendeFrage(String sender, String empfaenger, String frage, PrintWriter senderWriter) {
+        Socket recipientSocket;
+        synchronized (clients) {
+            recipientSocket = clients.get(empfaenger);
+        }
+        if (recipientSocket != null) {
+            try {
+                PrintWriter empfaengerWriter = new PrintWriter(recipientSocket.getOutputStream(), true);
+                empfaengerWriter.println("Frage von " + sender + ": " + frage);
+                BufferedReader empfaengerReader = new BufferedReader(new InputStreamReader(recipientSocket.getInputStream()));
+                String antwort = empfaengerReader.readLine();
+                if (antwort != null && antwort.startsWith("Antwort:")) {
+                    senderWriter.println(antwort);
+                } else {
+                    senderWriter.println(empfaenger + " konnte nicht antworten.");
+                }
+            } catch (IOException e) {
+                senderWriter.println("IOException: Frage konnte nicht gesendet werden!");
+                e.printStackTrace();
+            }
+        } else {
+            senderWriter.println(empfaenger + " ist nicht mit dem Server verbunden.");
+        }
+    }
+
+    private static void setzeAntwort(String frage, String antwort) {
+        synchronized (predefinedAnswers) {
+            predefinedAnswers.put(frage, antwort);
+        }
+    }
+
     // ************************************************************************
     // Client
     // ************************************************************************
@@ -113,10 +226,22 @@ public class TCPChat {
             try {
                 String serverNachricht;
                 while ((serverNachricht = reader.readLine()) != null) {
-                    System.out.println(serverNachricht);
+                    if (serverNachricht.equals("Ping")) {
+                        writer.println("Pong");
+                    } else if (serverNachricht.startsWith("Frage von ")) {
+                        String frage = serverNachricht.split(": ", 2)[1];
+                        String antwort = predefinedAnswers.get(frage);
+                        if (antwort != null) {
+                            writer.println("Antwort: " + antwort);
+                        } else {
+                            writer.println("Antwort: Keine Antwort vorhanden.");
+                        }
+                    } else {
+                        System.out.println(serverNachricht);
+                    }
                 }
             } catch (IOException e) {
-                System.out.println("IOException: Fehler beim lesen der Server Nachricht!");
+                System.out.println("IOException: Fehler beim Lesen der Server Nachricht!");
                 e.printStackTrace();
             }
         }).start();
@@ -149,4 +274,3 @@ public class TCPChat {
 
     private static BufferedReader br = null;
 }
-
