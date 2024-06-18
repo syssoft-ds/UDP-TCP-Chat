@@ -1,14 +1,13 @@
-package Aufgabe1;
+package U3;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
 
-public class netcat_tcp {
+public class netcat_udp {
 
     private static void fatal ( String comment ) {
         System.out.println(comment);
@@ -23,55 +22,48 @@ public class netcat_tcp {
             fatal("Usage: \"<netcat> -l <port>\" or \"netcat <ip> <port>\"");
         int port = Integer.parseInt(args[1]);
         if (args[0].equalsIgnoreCase("-l"))
-            Server(port);
+            listenAndTalk(port);
         else
-            Client(args[0],port);
+            connectAndTalk(args[0],port);
+    }
+
+    private static final int packetSize = 4096;
+
+    // ************************************************************************
+    // listenAndTalk
+    // ************************************************************************
+    private static void listenAndTalk ( int port ) throws IOException  {
+        DatagramSocket s = new DatagramSocket(port);
+        byte[] buffer = new byte[packetSize];
+        String line;
+        do {
+            DatagramPacket p = new DatagramPacket(buffer,buffer.length);
+            s.receive(p);
+            line = new String(buffer,0,p.getLength(),"UTF-8");
+            System.out.println(line);
+        } while (!line.equalsIgnoreCase("stop"));
+        s.close();
     }
 
     // ************************************************************************
-    // Server
+    // connectAndTalk
     // ************************************************************************
-    private static void Server ( int port ) throws IOException {
-        ServerSocket s = new ServerSocket(port);
-        while (true) {
-            Socket client = s.accept();
-            Thread t = new Thread(() -> serveClient(client));
-            t.start();
-        }
-    }
-
-    private static void serveClient ( Socket clientConnection ) {
-        try {
-            BufferedReader r = new BufferedReader(new InputStreamReader(clientConnection.getInputStream()));
-            String line;
-            do {
-                line = r.readLine();
-                System.out.println(line);
-            } while (!line.equalsIgnoreCase("stop"));
-            clientConnection.close();
-        }
-        catch (IOException e) {
-            System.out.println("There was an IOException while receiving data ...");
-            System.exit(-1);
-        }
-    }
-
-    // ************************************************************************
-    // Client
-    // ************************************************************************
-    private static void Client ( String serverHost, int serverPort ) throws IOException {
-        InetAddress serverAddress = InetAddress.getByName(serverHost);
-        Socket serverConnect = new Socket(serverAddress,serverPort);
-        PrintWriter w = new PrintWriter(serverConnect.getOutputStream(),true);
+    private static void connectAndTalk ( String other_host, int other_port ) throws IOException {
+        InetAddress other_address = InetAddress.getByName(other_host);
+        DatagramSocket s = new DatagramSocket();
+        byte[] buffer = new byte[packetSize];
         String line;
         do {
             line = readString();
-            w.println(line);
+            buffer = line.getBytes("UTF-8");
+            DatagramPacket p = new DatagramPacket(buffer,buffer.length,other_address,other_port);
+            s.send(p);
         } while (!line.equalsIgnoreCase("stop"));
-        serverConnect.close();
+        s.close();
     }
 
     private static String readString () {
+        BufferedReader br = null;
         boolean again = false;
         String input = null;
         do {
@@ -89,5 +81,5 @@ public class netcat_tcp {
         return input;
     }
 
-    private static BufferedReader br = null;
+    private BufferedReader br = null;
 }
