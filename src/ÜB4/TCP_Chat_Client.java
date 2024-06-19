@@ -73,6 +73,10 @@ public class TCP_Chat_Client {
                     System.out.println("Message sent.");
                 } else if (userInput.equalsIgnoreCase("getclientlist")) {
                     out.println("getclientlist");
+                } else if (parts[0].equalsIgnoreCase("ask") && parts.length == 3) {
+                    out.println(userInput); // Send the ask command to the server
+                } else if (parts[0].equalsIgnoreCase("set") && parts.length >= 3) {
+                    out.println(userInput); // Send the set command to the server
                 } else {
                     System.err.println("Unknown command.");
                 }

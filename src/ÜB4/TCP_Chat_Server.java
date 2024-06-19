@@ -15,6 +15,9 @@ public class TCP_Chat_Server {
     private static final int port = 1444;
     private static final Map<String, ClientInfo> clients = new ConcurrentHashMap<>();
 
+    private static final Map<String, String> predefinedAnswers = new ConcurrentHashMap<>();
+
+
     private static class ClientInfo {
         Socket socket;
         PrintWriter out;
@@ -89,6 +92,18 @@ public class TCP_Chat_Server {
                             }
                         }
                     }
+                } else if (parts[0].equalsIgnoreCase("ask")) {
+                    String[] messageParts = parts[1].split(" ", 2);
+                    String question = messageParts[1];
+                    String recipient = messageParts[0];
+                    String answer = predefinedAnswers.getOrDefault(question, "I don't have an answer to that.");
+                    sendMessage("Server", recipient, answer);
+                } else if (parts[0].equalsIgnoreCase("set")) {
+                    String[] messageParts = parts[1].split(" ", 2);
+                    String question = messageParts[0];
+                    String answer = messageParts[1];
+                    predefinedAnswers.put(question, answer);
+                    clientInfo.out.println("Response for question '" + question + "' set to: " + answer);
                 } else {
                     clientInfo.out.println("Unknown command.");
                 }
