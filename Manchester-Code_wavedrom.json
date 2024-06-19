@@ -1,0 +1,13 @@
+{signal: [
+  {name: 'clk', wave: 'N.......',period:1,phase:1},{},
+  {name: 'message', wave:"h.L.HlHl.h..Lh." ,phase:1,period:0.5},
+  {},
+  {name: "Encoded",wave:"h.L.HlH.L.H.L.H",phase:1,period:0.5},
+  {name:"bits",wave:"2222222",data:"0 1 1 0 1 0 1",period:1},
+  
+],config:{hscale: 2,
+          skin:'narrow'},head:{
+            text:"",
+            tick:1,
+            }
+}
