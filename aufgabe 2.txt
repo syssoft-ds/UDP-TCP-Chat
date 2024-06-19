@@ -1,0 +1,12 @@
+Die IP-Adresse 103.161.122.83/18 besteht aus der Adresse 103.161.122.83 und dem Präfix /18. Die 103.161.122.83 ist die spezifische IP-Adresse des Geräts. Die 18 bedeutet, dass die ersten 18 Bits die Netzwerkadresse ausmachen. Das ergibt eine Subnetzmaske von 255.255.192.0.
+
+Um die Netzwerkadresse zu berechnen, setzen wir die letzten 14 Bits (weil 32-18=14) der IP auf 0. Daraus ergibt sich die Netzwerkadresse 103.161.64.0. Die Broadcastadresse kriegen wir, indem wir die letzten 14 Bits auf 1 setzen: 103.161.127.255.
+
+Jetzt zum Vergleich mit 103.161.193.83/18. Die Netzwerkadresse dieser IP wäre 103.161.192.0. Da 103.161.64.0 und 103.161.192.0 unterschiedlich sind, liegen 103.161.122.83/18 und 103.161.193.83/18 nicht im selben Netz.
+
+Zusammengefasst:
+
+Subnetzmaske: 255.255.192.0
+Netzwerkadresse: 103.161.64.0
+Broadcastadresse: 103.161.127.255
+103.161.122.83/18 und 103.161.193.83/18 sind nicht im selben Netz.

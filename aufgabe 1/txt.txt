@@ -1,0 +1,30 @@
+Kategorien des IPv4-Headers und entsprechende Elemente aus dem Paket in Wireshark:
+
+- **Version**: 4
+  - Gibt an, dass es sich um ein IPv4-Paket handelt.
+- **Header Length**: 20 Bytes (5)
+  - Länge des IP-Headers in 32-Bit-Worten.
+- **Type of Service (Differentiated Services Field)**: 0x00
+  - Differentiated Services Codepoint (DSCP): 0
+  - Explicit Congestion Notification (ECN): 0
+- **Total Length**: 80 Bytes
+  - Gesamtlänge des IP-Pakets inklusive Header und Daten.
+- **Identification**: 0x4aee (19182)
+  - Eindeutige Identifikation des IP-Pakets.
+- **Flags**: 0x2 (Don't fragment)
+  - Flags: 010
+    - Reserved bit: 0
+    - Don't fragment: 1
+    - More fragments: 0
+- **Fragment Offset**: 0
+  - Offset des Fragments.
+- **Time to Live (TTL)**: 53
+  - Maximale Anzahl der Hops, die das Paket durchlaufen darf.
+- **Protocol**: 17 (UDP)
+  - Protokoll, das in den Daten des IP-Pakets verwendet wird.
+- **Header Checksum**: 0xdf41
+  - Prüfsumme zur Fehlererkennung im IP-Header.
+- **Source Address**: 35.207.147.248
+  - Quell-IP-Adresse des Pakets.
+- **Destination Address**: 136.199.218.222
+  - Ziel-IP-Adresse des Pakets.
