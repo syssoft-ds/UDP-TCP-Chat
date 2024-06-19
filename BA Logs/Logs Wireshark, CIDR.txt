@@ -1,0 +1,61 @@
+Aufgabe 1
+Das IPv4-Paket (Screenshot-1):
+Version: 4 wie erwartet
+Header Length: 20 Bytes
+Total Length: 1492
+Type of Service: 0x00 (DSCP: CS0, ECN: Not-ECT)
+Identification: 0x42de, die ID des Pakets
+Flags: 0x2, soll also nicht fragmentiert werden
+Protocol: TCP (6)
+Offset: 0
+Time to Live: 58 (Hops, nicht Zeit)
+Source & Dst Address: ablesbar
+
+Da es sich auch um ein TCP-Paket handelt lassen sich auch gleich die Kategorien dieses
+Protokolls ablesen:
+Source Port: 443
+Destination Port: 52310
+Sequence Number: 6310488, die Sequenznummer? des ersten Bytes des Segments
+Acknowledgement Number: 7666, gibt an was als nächstes erwartet wird
+Header-Length: 20 Bytes
+Flags: 0x010
+Window Size: 2450 bytes 
+Checksum: 0xe3f9
+Urgent Pointer: 0, also keinen
+
+
+Das UDP-Paket (Screenshot-2):
+Source Port: 5353
+Destination Port: 5353
+Length: 31
+Checksum: 0x77dc
+Time since first & last frame: 0 Sekunden
+UDP Payload: 23 bytes
+
+
+Aufgabe 2
+Aus der, in CIDR Notation gegebenen Zahlenfolge 103.161.122.83/18 lässt sich direkt die
+Subnetzmaske berechnen. Diese ergibt sich aus der /18 am Ende der Notation und bedeutet,
+dass 18 Plätze zur Verfügung stehen. Demnach gibt es 16,384 Möglichkeiten bei einer Subnet-
+mask von: 11111111.11111111.11000000.00000000 bzw. 255.255.192.0
+Für die Netzwerkadresse berechne man nun ein logisches-Und auf der IP-Adresse und berechneten
+Subnetzmaske in binär. Daraus erhält man dann die Adresse dessen Netzwerks:
+01100111.10100001.01111010.01010011
+11111111.11111111.11000000.00000000
+ergibt:
+01100111.10100001.01000000.00000000
+was dann die Netzwerkadresse ist.
+Für die Broadcastadresse müssen dann die letzten, in diesem Fall 32-18=14 Bits der
+Netzwerkadresse auf 1 gesetzt werden: 
+01100111.10100001.01111111.11111111
+
+Damit 2 dieser CIDR Notationen im selben Netz liegen, müssen dessen Netzwerkadressen
+gleich sein. Im Falle der Aufgabe sind sie nicht im selben Netz, da die Netzwerkadresse von
+103.161.193.83/18 nach selbem Schema 01100111.10100001.11000000.00000000 ist
+01100111.10100001.11000000.00000000 =/= 01100111.10100001.01000000.00000000
+
+
+Aufgabe 3
+Habe die Implementation der Musterlösung mit einer Implementation anderer Komilitonen versucht zu
+verbinden. Da wurde der Port nur von einer Seite erkannt. Sprich es ließen sich keine Nachrichten schicken.
+Dafür denke ich bräuchte man Spezifikationen, wie es bei der 4 gefordert wird.
