@@ -1,4 +1,4 @@
-package Aufgabe2;
+package ÜB3.Aufgabe2;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;

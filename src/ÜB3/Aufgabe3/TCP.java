@@ -1,4 +1,4 @@
-package Aufgabe3;
+package ÜB3.Aufgabe3;
 
 import java.io.BufferedReader;
 import java.io.IOException;
