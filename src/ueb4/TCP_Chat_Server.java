@@ -1,4 +1,4 @@
-package aufgabe4;
+package ueb4;
 
 import java.io.BufferedReader;
 import java.io.IOException;
