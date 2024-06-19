@@ -1,0 +1,53 @@
+Aufgabe 1
+Siehe erstes Paket tcp.pcapng und udp.pcapng
+
+IPv4 Header:
+
+Frame 1: 74 bytes on wire (592 bits), 74 bytes captured (592 bits) on interface lo, id 0
+Ethernet II, Src: 00:00:00_00:00:00 (00:00:00:00:00:00), Dst: 00:00:00_00:00:00 (00:00:00:00:00:00)
+Internet Protocol Version 4, Src: 127.0.0.1, Dst: 127.0.0.1
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+    Total Length: 60
+    Identification: 0xe485 (58501)
+    010. .... = Flags: 0x2, Don't fragment
+    ...0 0000 0000 0000 = Fragment Offset: 0
+    Time to Live: 64
+    Protocol: TCP (6)
+    Header Checksum: 0x5834 [validation disabled]
+    [Header checksum status: Unverified]
+    Source Address: 127.0.0.1
+    Destination Address: 127.0.0.1
+Transmission Control Protocol, Src Port: 37800, Dst Port: 1234, Seq: 0, Len: 0
+
+Das 1. Hälfte des 1.Byte gibt die Version an (hier Version 4).
+Das 2. Hälfte gibt die Länge des Headers an (hier 5 also 5*32 Bits ergibt 20 Bytes)
+Das 2. Byte spezifiziert DSCP Informationen
+Die nächsten 2 Bytes geben die Gesamtgröße des Pakets in Bytes an (hier 60)
+Die nächsten 2 Bytes dienen zur Identifikation des Pakets.
+Die nächsten 2 Bytes geben an, ob das Paket fragmentiert ist und wenn ja auf welche Weise.
+Das nächste Byte gibt die TTL an, also gibt die Anzahl an maximalen Hops an (hier 64).
+Das nächste Byte spezifiert das Protokoll (hier 6, also TCP)
+Darauf folgt die Header Checksumme (2 Bytes), die Versenderadresse und die Zieladresse mit jeweils 4 Bytes
+
+Ähnliche wie das IPv4 besitzt das auch die äquivalente Elemente, wie die Checksumme, Header Length, Flags und Information über den Versender (Port) und das Ziel (Port).
+Auch das UDP-Paket besitzt ähnliche Elemente, wie die Länge (2 Bytes), Checksumme (2 Bytes), Zielport und Versenderport.
+
+Aufgabe 2
+Nach CIDR Notation besteht 103.161.122.83/18 aus 4 Oktetts der IPv4-Adresse und der Netzwerkmaske,
+also die ersten 18 Bits spezifizieren die Netzwerkadresse 103.161.64.0.
+Für die Broadcastadresse werden die restlichen Bits auf 1 gesetzt, somit ergibt sich 103.161.127.255.
+Die Subnetzmaske ist 255.255.192.0.
+
+Aufgabe 3
+Die Lösung des letzten Übung wurden auf unterschiedliche Weise implementiert, so dass es keinen Standard zur Kommunikation gab.
+So ist schon unmöglich wenige Implementierung aufeinander abzustimmen, da sie zu unterschiedliche Weise Nachrichten versenden.
+Eine Lösung für ein UDP / TCP Chat mit einem einheitlicheres Protokoll ist in Aufgabe 4 implementiert.
+
+Aufgabe 4
+TCP & UDP
+send all <message> um eine Nachricht an alle zu senden
+getclientlist um aktive Clients zu erhalten
+ask <name> <question> um eine Antwort zu versenden
+set <question> <answer> um eine automatische Antwort zu erstellen
