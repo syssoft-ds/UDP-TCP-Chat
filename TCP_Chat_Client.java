@@ -1,9 +1,13 @@
+package oxoo2a.tcp;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.NetworkInterface;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Enumeration;
 
 public class TCP_Chat_Client {
     private static String name;
@@ -15,43 +19,33 @@ public class TCP_Chat_Client {
         System.exit(-1);
     }
 
-    public static boolean isIP(String ip) { // Checks if String is valid IPv4 address
-        return UDP_Chat.isIP(ip);
-    }
-
-    public static boolean isPort(String port) {
-        return UDP_Chat.isPort(port);
-    }
-
     public static void main(String[] args) {
-
-        // Handling arguments, checking validity
         if (args.length != 3) {
             fatal("Arguments: \"<server ip address> <server port number> <client name>\"");
         }
-        if (!isIP(args[0])) {
-            fatal("Invalid IP address");
-        } else {
-            serverIP = args[0];
-        }
-        if (!isPort(args[1])) {
-            fatal("Invalid port number");
-        } else {
-            serverPort = Integer.parseInt(args[1]);
-        }
+
+        serverIP = args[0];
+        serverPort = Integer.parseInt(args[1]);
         name = args[2];
 
         try (Socket socket = new Socket(serverIP, serverPort);
              PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
              BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
              BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in))) {
-            // closes automatically
 
+            // Start a thread to listen for messages from the server
             new Thread(() -> {
                 try {
                     String fromServer;
                     while ((fromServer = in.readLine()) != null) {
-                        System.out.println(fromServer);
+                        if (fromServer.startsWith("ask ")) {
+                            String[] parts = fromServer.split(" ", 3);
+                            String asker = parts[1];
+                            String question = parts[2];
+                            handlePredefinedQuestion(question, out, asker);
+                        } else {
+                            System.out.println(fromServer);
+                        }
                     }
                 } catch (IOException e) {
                     fatal("Unable to get message from Server.");
@@ -61,14 +55,19 @@ public class TCP_Chat_Client {
             // Register the client with the server
             out.println("register " + name);
 
-            System.out.println(name + " is connected to Server at IP " + serverIP + " on port " + serverPort + ".\nUse \"send <client name> <message>\" to send a message to a client.");
-
+            // Main thread to handle user input
             String userInput;
             while ((userInput = stdIn.readLine()) != null) {
                 String[] parts = userInput.split(" ", 3);
                 if (parts[0].equalsIgnoreCase("send") && parts.length == 3) {
                     out.println(userInput);
                     System.out.println("Message sent.");
+                } else if (parts[0].equalsIgnoreCase("sendall")) {
+                    out.println("sendall " + userInput.substring(8)); // Send the message to server
+                    System.out.println("Message sent to all clients.");
+                } else if (parts[0].equalsIgnoreCase("ask") && parts.length == 3) {
+                    out.println(userInput); // Send ask command to server
+                    System.out.println("Request sent.");
                 } else {
                     System.err.println("Unknown command.");
                 }
@@ -76,8 +75,38 @@ public class TCP_Chat_Client {
         } catch (UnknownHostException e) {
             fatal("Unknown Server with IP " + serverIP);
         } catch (IOException e) {
-            fatal("Unable to send message.");
+            fatal("Unable to send/receive message.");
         }
         System.exit(0);
+    }
+
+    private static String getMacAddress() {
+        try {
+            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+            while (interfaces.hasMoreElements()) {
+                NetworkInterface networkInterface = interfaces.nextElement();
+                byte[] mac = networkInterface.getHardwareAddress();
+                if (mac != null) {
+                    StringBuilder macAddress = new StringBuilder();
+                    for (int i = 0; i < mac.length; i++) {
+                        macAddress.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
+                    }
+                    return macAddress.toString();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "MAC-Adresse nicht gefunden";
+    }
+
+    private static void handlePredefinedQuestion(String question, PrintWriter out, String asker) {
+        if (question.equalsIgnoreCase("Was ist deine MAC-Adresse?")) {
+            out.println("response " + asker + " " + getMacAddress());
+        } else if (question.equalsIgnoreCase("Sind Kartoffeln eine richtige Mahlzeit?")) {
+            out.println("response " + asker + " Ja, Kartoffeln sind eine richtige Mahlzeit.");
+        } else {
+            out.println("response " + asker + " Unbekannte Frage.");
+        }
     }
 }

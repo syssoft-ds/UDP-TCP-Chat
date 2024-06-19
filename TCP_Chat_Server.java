@@ -1,7 +1,6 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+package oxoo2a.tcp;
+
+import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -62,6 +61,14 @@ public class TCP_Chat_Server {
                     String recipient = parts[1];
                     String message = parts[2];
                     sendMessage(clientName, recipient, message);
+                } else if (parts[0].equalsIgnoreCase("sendall")) {
+                    sendToAllClients(clientName, line.substring(8)); // Send the message to all clients
+                } else if (parts[0].equalsIgnoreCase("ask") && parts.length == 3) {
+                    forwardPredefinedQuestion(clientName, parts[1], parts[2]);
+                } else if (parts[0].equalsIgnoreCase("response") && parts.length == 3) {
+                    String asker = parts[1];
+                    String response = parts[2];
+                    sendResponseToAsker(clientName, asker, response);
                 } else {
                     clientInfo.out.println("Unknown command.");
                 }
@@ -69,7 +76,6 @@ public class TCP_Chat_Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.exit(0);
     }
 
     private static void sendMessage(String sender, String recipient, String message) {
@@ -79,6 +85,39 @@ public class TCP_Chat_Server {
                 recipientInfo.out.println("Message from " + sender + ": " + message);
             } else {
                 System.out.println("Client " + recipient + " not found.");
+            }
+        }
+    }
+
+    private static void sendToAllClients(String sender, String message) {
+        synchronized (clients) {
+            for (Map.Entry<String, ClientInfo> entry : clients.entrySet()) {
+                if (!entry.getKey().equals(sender)) {
+                    entry.getValue().out.println("Message from " + sender + " to all: " + message);
+                }
+            }
+        }
+    }
+
+    private static void forwardPredefinedQuestion(String asker, String recipient, String question) {
+        synchronized (clients) {
+            ClientInfo recipientInfo = clients.get(recipient);
+            if (recipientInfo != null) {
+                recipientInfo.out.println("ask " + asker + " " + question);
+            } else {
+                ClientInfo askerInfo = clients.get(asker);
+                if (askerInfo != null) {
+                    askerInfo.out.println("Client " + recipient + " not found.");
+                }
+            }
+        }
+    }
+
+    private static void sendResponseToAsker(String responder, String asker, String response) {
+        synchronized (clients) {
+            ClientInfo askerInfo = clients.get(asker);
+            if (askerInfo != null) {
+                askerInfo.out.println("Response from " + responder + ": " + response);
             }
         }
     }
