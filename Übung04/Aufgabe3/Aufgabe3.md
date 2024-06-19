@@ -24,6 +24,10 @@ Auch bei UDP unterscheiden sich die Implementierungen zu stark, um eine erfolgre
 ![wireshark_screenshot_IPv4_paket](.\UDP1.png)
 Der Client schickt lediglich ein Paket an den Server
 
+### Inter-Client-Kommunikation
+
+Hier wäre es wichtig sich auf gemeinsame Standards zu einigen bzgl. Aufbau und Interpretation von Nachrichten.
+
 
 
 

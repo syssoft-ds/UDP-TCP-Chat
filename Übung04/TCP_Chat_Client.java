@@ -50,8 +50,18 @@ public class TCP_Chat_Client {
             new Thread(() -> {
                 try {
                     String fromServer;
+                    String[] parts;
                     while ((fromServer = in.readLine()) != null) {
-                        System.out.println(fromServer);
+                        parts = fromServer.split(" ", 5);
+                        if (fromServer.equals("ping")) {
+                            System.out.println("ping received. sending pong");
+                            out.println("pong");
+                        } else if(parts.length == 5 && parts[3].equalsIgnoreCase(":") && parts[4].equalsIgnoreCase("frühstück?")){
+                            out.println("send " + parts[2] + " Leberwurscht");
+                            System.out.println("send " + parts[2] + " Leberwurscht");
+                        } else {
+                            System.out.println(fromServer);
+                        }
                     }
                 } catch (IOException e) {
                     fatal("Unable to get message from Server.");
@@ -59,16 +69,15 @@ public class TCP_Chat_Client {
             }).start();
 
             // Register the client with the server
-            out.println("register " + name);
-
-            System.out.println(name + " is connected to Server at IP " + serverIP + " on port " + serverPort + ".\nUse \"send <client name> <message>\" to send a message to a client.");
+            send(out, "register " + name, name + " is connected to Server at IP " + serverIP + " on port " + serverPort + ".\nUse \"send <client name> <message>\" to send a message to a client.");
 
             String userInput;
             while ((userInput = stdIn.readLine()) != null) {
                 String[] parts = userInput.split(" ", 3);
                 if (parts[0].equalsIgnoreCase("send") && parts.length == 3) {
-                    out.println(userInput);
-                    System.out.println("Message sent.");
+                    send(out, userInput, "Message sent.");
+                } else if (parts[0].equalsIgnoreCase("sendall") && parts.length == 2){
+                    send(out, userInput, "Message sent to all clients.");
                 } else {
                     System.err.println("Unknown command.");
                 }
@@ -79,5 +88,10 @@ public class TCP_Chat_Client {
             fatal("Unable to send message.");
         }
         System.exit(0);
+    }
+
+    private static void send(PrintWriter out, String userInput, String x) {
+        out.println(userInput);
+        System.out.println(x);
     }
 }
