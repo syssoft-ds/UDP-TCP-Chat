@@ -15,10 +15,3 @@ ACKNOWLEDGE. Über TCP werden so zwischen Client und Server eine Verbindung aufg
 dem Client bestätigt, die ebenfalls als Nachricht in Wireshark erscheint. UDP sendet die Daten ohne die Notwendigkeit
 einer Antwort, und der Server empfängt die Daten passiv, ohne darauf zu antworten, es sei denn, es ist ausdrücklich im
 Code vorgesehen, was hier bei netcat ja nicht der Fall ist.
-
-
-Aufgabe 2
-
-Komme beim Code nicht weiter
-
-...
