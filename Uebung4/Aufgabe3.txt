@@ -1,0 +1,10 @@
+Die Hauptsächlichen Probleme der Kommunikation bestand darin, dass die jeweiligen Implementationen die gesendeten Nachrichten interpretiert.
+z.b. die eigene Serverimplementierung würde die nachricht "/User" akzeptieren als befehl aber die gestellte chatanwendung lies diese nachricht nicht durch da sie nicht "den bekannten befehlen entsprach".
+
+Solche probleme lassen sich nur vermeiden indem man die anwendung auf diese unterschiede anpasst und somit Kompatibel für mehrere Implementierungen macht. es gibt keine "die Lösung" die das Problem beseitigt und man muss immer schauen wie diese Kompatibilität nun umzusetzen ist.
+
+Im bezug auf die Aufgabe wären Beispiele:
+
+- Eigene syntax von user:Nachricht zu send User Nachricht ändern.(genormt)
+- die Nachricht "/User" client seitig erlauben un den server entscheiden lassen ob dies nun gültig ist oder nicht.
+- Beim server eine befehlsliste anfragen lassen können um dem Nutzer klarheit zu geben was genau jetzt relevant ist.

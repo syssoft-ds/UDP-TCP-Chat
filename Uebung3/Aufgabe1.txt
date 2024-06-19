@@ -1,0 +1,11 @@
+UDP: Das Programm ist startbar mit einem Hostclient modus, welcher alle Nachrichten empfängt und anzeigt, oder der möglichkeit sich mit genanntem
+     Host zu verbinden. Die Nachrichten werden per UDP stupide an den Host gesendet; von Nachricht von Sender zu empfänger, mehr nicht.
+     In der PCAP Datei sieht man deutlich das die Pakete nur aus Addresse und Nachricht (mit Prüfsumme) bestehen.
+     Ausserdem hat das Programm die eigenschaft, dass wenn ein teilnehmer "stop" verwendet, der Host auch schließt und somit von den verbundenen Teilnehmern      nicht mehr die Nachrichten empfängt. Wenn das passiert sind die Pakete verloren mit "Destination Unreachable".
+
+TCP: Diese Version funktioniert vom Prinzip her ähnlich das es einen Host und verbundene Nutzer gibt und nur der Host alle empfangenen Nachrichten anzeigt.
+     Allerdings läuft es mit dem TCP Protokoll welches, auch in der PCAP datei sichtbar, bei jeder nachricht flags verschickt um die fehlerhafte      kommunikation zu gewährleisten. Der Host, auch gennant Server, öffnet für jeden neuen verbundenen Teilnehmer, Client genannt, eine neue Thread
+     und somit kann ein Teilnehmer nicht den gesamten Server stoppen wenn "stop" benutzt wird wie in UDP. 
+     Das TCP Protokoll hat für jede verschickte nachricht das 3 way handshake, welches eine Nachricht schickt (Psh), eine bestätigung bekommt das die 
+     Nachricht ankam (Ack) und eine bestätigung dazu wird auch versandt. Analog verhält sich das auch mit der verbindung eines Client (Syn) und dem
+     Trennen dieser (Fin). Beobachtet wurde dieses Verhalten in Wireshark und ist in der PCAP Datei einsichtbar.
