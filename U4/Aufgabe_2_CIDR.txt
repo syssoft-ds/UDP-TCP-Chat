@@ -1,0 +1,23 @@
+Die IP-Adresse 103.1.62.238/18 analysieren:
+
+- **Werte Bedeutung**:
+  - **103**: Erstes Oktett des Netzwerkanteils der IP-Adresse.
+  - **1**: Zweites Oktett des Netzwerkanteils.
+  - **62**: Drittes Oktett des Netzwerkanteils.
+  - **238**: Oktett des Hostanteils der IP-Adresse.
+
+- **Subnetzmaske**: Bei einer CIDR-Notation von /18 sind die ersten 18 Bits der Adresse der Netzwerkanteil. Die Subnetzmaske ist daher `255.255.192.0`, was in Binärform `11111111.11111111.11000000.00000000` entspricht.
+
+- **Broadcastadresse**: Die Broadcastadresse wird ermittelt, indem alle Host-Bits auf 1 gesetzt werden. Für die Adresse 103.1.62.238/18 wäre die Broadcastadresse `103.1.63.255`.
+
+- **Netzwerkadresse**: Die Netzwerkadresse wird ermittelt, indem alle Host-Bits auf 0 gesetzt werden. Für die Adresse 103.1.62.238/18 wäre die Netzwerkadresse `103.1.0.0`.
+
+- **Vergleich mit 103.1.64.93/18**: Um zu bestimmen, ob die IP-Adresse 103.1.64.93/18 im selben Netz wie die IP-Adresse 103.1.62.238/18 liegt, vergleichen wir die Netzwerkadressen. Da beide Adressen die gleiche CIDR-Notation /18 haben und das dritte Oktett (62 und 64) innerhalb des Bereichs des Netzwerkanteils liegt, sind sie im selben Netzwerk.
+
+```markdown
+**Ergebnisse**:
+- Subnetzmaske: 255.255.192.0
+- Broadcastadresse: 103.1.63.255
+- Netzwerkadresse: 103.1.0.0
+- Beide IP-Adressen liegen im selben Netzwerk.
+```
