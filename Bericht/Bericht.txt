@@ -1,0 +1,49 @@
+Aufgabe 1:
+In Wireshark sieht man, dass UPD eine unidirektionale verbindung ist.
+Die TCP Verbindung ist Bidirektional, es ist steht das Acknowledgment Packet zu einer Nachricht zu sehen.
+
+
+Unter der verwendung meiner Version von netcatTCP mit einem Server, werden pro Nachricht jeweils 4 Pakete versendet.
+ClientA --Nachricht--> Server
+Server --Bestätigung--> ClientA
+Server --Nachricht--> ClientB
+ClientB --Bestätigung--> Server
+
+------------------------------------------------------------------------------------------------------------------------
+Aufgabe 2 & 3:
+Ich habe mich etwas in der Zeit verloren, die Programme laufen beide, allerdings bin ich leider nicht mehr zu einer
+sauberen Dokumentation gekommen. Diese kann ich allerdings noch nacharbeiten.
+
+netcatUDP:
+Argumente: <Port>
+Eben der gewünschte Port.
+
+Erst muss man mit dem Befehl add einen Nutzer hinzufügen.
+    add <Username> <IP> <Port>
+Dann kann man diesem mit send eine Nachricht schicken.
+    send <Username> <Message>
+
+Mit help kann man sich die anderen Befehle anzeigen lassen.
+    help
+
+netcatTCP:
+Argumente: <-s|-c> <Port>
+Mit -s startet man das Programm im Server-modus und mit -c im Client-modus.
+
+Als erstes benötigt man eine Instanz die als Server gestartet wird
+    java -jar netcatTCP.jar -s <Port>
+Dann brauchen wir noch Clients, die miteinander kommunizieren wollen.
+    java -jar netcatTCP.jar -c <Port>
+
+Nun müssen die Clients sich mit dem Server verbinden
+    connect <IP> <Port>
+Dann müssen die Clients sich noch registrieren.
+    register <Username>
+Mit dem Befehl show kann sich der Client eine Liste aller registrierten User vom Server schicken lassen.
+    show
+Jetzt kann der Client einem anderen registrierten Client eine Nachricht senden.
+    send <Username> <Message>
+
+------------------------------------------------------------------------------------------------------------------------
+Aufgabe 4:
+Das Ergebnis ist als .png in diesem Ordner zu finden.
