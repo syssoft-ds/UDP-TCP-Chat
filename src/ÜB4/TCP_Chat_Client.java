@@ -63,7 +63,7 @@ public class TCP_Chat_Client {
             // Register the client with the server
             out.println("register " + name);
 
-            System.out.println(name + " is connected to Server at IP " + serverIP + " on port " + serverPort + ".\nUse \"send <client name> <message>\" to send a message to a client.");
+            System.out.println(name + " is connected to Server at IP " + serverIP + " on port " + serverPort + ".\nUse \"send <client name> <message>\" to send a message to a client.\nUse \"getclientlist\" to get the list of active clients.");
 
             String userInput;
             while ((userInput = stdIn.readLine()) != null) {
@@ -71,6 +71,8 @@ public class TCP_Chat_Client {
                 if (parts[0].equalsIgnoreCase("send") && parts.length == 3) {
                     out.println(userInput);
                     System.out.println("Message sent.");
+                } else if (userInput.equalsIgnoreCase("getclientlist")) {
+                    out.println("getclientlist");
                 } else {
                     System.err.println("Unknown command.");
                 }
