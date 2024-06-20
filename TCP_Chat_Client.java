@@ -45,6 +45,7 @@ public class TCP_Chat_Client {
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in))) {
+
             // closes automatically
 
             new Thread(() -> {
@@ -55,6 +56,7 @@ public class TCP_Chat_Client {
                             out.println("pong");
                             continue;
                         }
+
                         System.out.println(fromServer);
                     }
                 } catch (IOException e) {
@@ -83,6 +85,7 @@ public class TCP_Chat_Client {
                 } else if (parts[0].equalsIgnoreCase("set") && parts.length == 3) {
                     out.println(userInput);
                     System.out.println("Answer set.");
+
                 } else {
                     System.err.println("Unknown command.");
                 }

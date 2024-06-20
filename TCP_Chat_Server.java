@@ -19,6 +19,7 @@ public class TCP_Chat_Server {
         Map<String, String> answers;
         boolean isAlive;
 
+
         ClientInfo(Socket socket) {
             try {
                 this.socket = socket;
@@ -26,6 +27,7 @@ public class TCP_Chat_Server {
                 this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 this.answers = new HashMap<>();
                 this.isAlive = true;
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -121,9 +123,7 @@ public class TCP_Chat_Server {
                     clientInfo.out.println("Unknown command.");
                 }
             }
-        } catch (
-
-        IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         System.exit(0);
