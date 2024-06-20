@@ -1,0 +1,6 @@
+Das netcat Java Programm kann als Listener (Server) oder Sender (Client) getartet werden mit jeweils -l <port> oder <ip> <port>.
+Im Client kann dann eine Nachricht eingegeben werden, die an den Server geschickt wird.
+In der UDP-Variante des netcat Programmes wird pro Nachricht vom Client ein Paket, welche die Nachricht enthält vom Client zum Server verschickt.
+In der TCP-Variante wird zunächst eine Verbindung aufgebaut vom Client zum Server [SYN] und dies wird dann bestätigt vom Server [SYN, ACK] und Client [ACK]
+Wird eine Nachricht abgeschickt sendet der Client ein Paket zum Server [PSH, ACK], welchess die Nachricht enthält, welches danach vom Server bestätigt wird [ACK]
+Die TCP-Pakete sind dabei immer etwas größer als die UDP-Pakete, da TCP-Pakete mehr Informationen im Header enthalten.

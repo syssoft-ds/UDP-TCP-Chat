@@ -42,15 +42,21 @@ public class TCP_Chat_Client {
         name = args[2];
 
         try (Socket socket = new Socket(serverIP, serverPort);
-             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-             BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in))) {
+                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in))) {
+
             // closes automatically
 
             new Thread(() -> {
                 try {
                     String fromServer;
                     while ((fromServer = in.readLine()) != null) {
+                        if (fromServer.equalsIgnoreCase("ping")) {
+                            out.println("pong");
+                            continue;
+                        }
+
                         System.out.println(fromServer);
                     }
                 } catch (IOException e) {
@@ -61,7 +67,8 @@ public class TCP_Chat_Client {
             // Register the client with the server
             out.println("register " + name);
 
-            System.out.println(name + " is connected to Server at IP " + serverIP + " on port " + serverPort + ".\nUse \"send <client name> <message>\" to send a message to a client.");
+            System.out.println(name + " is connected to Server at IP " + serverIP + " on port " + serverPort
+                    + ".\nUse \"send <client name> <message>\" to send a message to a client.");
 
             String userInput;
             while ((userInput = stdIn.readLine()) != null) {
@@ -69,6 +76,16 @@ public class TCP_Chat_Client {
                 if (parts[0].equalsIgnoreCase("send") && parts.length == 3) {
                     out.println(userInput);
                     System.out.println("Message sent.");
+                } else if (parts[0].equalsIgnoreCase("getclientlist")) {
+                    out.println("getclientlist");
+                    System.out.println("Client list requested.");
+                } else if (parts[0].equalsIgnoreCase("ask") && parts.length == 3) {
+                    out.println(userInput);
+                    System.out.println("Question asked.");
+                } else if (parts[0].equalsIgnoreCase("set") && parts.length == 3) {
+                    out.println(userInput);
+                    System.out.println("Answer set.");
+
                 } else {
                     System.err.println("Unknown command.");
                 }
