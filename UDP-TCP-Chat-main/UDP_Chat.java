@@ -4,6 +4,7 @@ import java.io.InputStreamReader;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class UDP_Chat {
@@ -11,6 +12,7 @@ public class UDP_Chat {
     private static int port;
     private static String name;
     private static final Map<String, ClientInfo> clients = new HashMap<>();
+    private static final Map<String, String> predefinedQuestions = new HashMap<>();
 
     private record ClientInfo(String ip, int port) { }
 
@@ -52,12 +54,17 @@ public class UDP_Chat {
         }
         name = args[1];
 
-        System.out.println(name + " (Port: " + port + ") is here, looking around.\nUse \"register <ip address> <port number>\" to contact another client.\nUse \"send <registered client name> <message>\" to message them.\nUse \"quit\" to exit program.");
+        // Predefined questions and answers
+        predefinedQuestions.put("What is your MAC address?", "I don't have a MAC address.");
+        predefinedQuestions.put("Are potatoes a proper meal?", "Absolutely, potatoes are versatile and nutritious!");
+
+        System.out.println(name + " (Port: " + port + ") is here, looking around.\nUse \"register <ip address> <port number>\" to contact another client.\nUse \"send <registered client name> <message>\" to message them.\nUse \"sendall <message>\" to message all clients.\nUse \"updateclients\" to refresh the client list.\nUse \"quit\" to exit program.");
+
         // Start a new thread to listen for messages
         new Thread(() -> receiveLines(port)).start();
 
         // Main thread continues to process user input
-        try(BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) { // closes automatically
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) { // closes automatically
             String input;
             while (!(input = br.readLine()).equalsIgnoreCase("quit")) {
                 String[] parts = input.split(" ");
@@ -73,6 +80,11 @@ public class UDP_Chat {
                     } else {
                         System.err.println("Unknown client \"" + receiver + "\".");
                     }
+                } else if (parts[0].equalsIgnoreCase("sendall")) {
+                    String message = input.substring(input.indexOf("sendall") + "sendall".length()).trim();
+                    sendToAll(message);
+                } else if (parts[0].equalsIgnoreCase("updateclients")) {
+                    updateClients();
                 } else {
                     System.err.println("Unknown command.");
                 }
@@ -86,7 +98,7 @@ public class UDP_Chat {
     private static final int packetSize = 4096;
 
     private static void receiveLines(int port) {
-        try(DatagramSocket s = new DatagramSocket(port)) { // closes automatically
+        try (DatagramSocket s = new DatagramSocket(port)) { // closes automatically
             byte[] buffer = new byte[packetSize];
             String line;
             do {
@@ -105,8 +117,10 @@ public class UDP_Chat {
                     } else {
                         System.err.println("Cannot register \"" + name + "\" because of invalid information.");
                     }
+                } else {
+                    System.out.println(line);
+                    handlePredefinedQuestions(line, p.getAddress().getHostAddress(), p.getPort());
                 }
-                System.out.println(line);
             } while (!line.equalsIgnoreCase("quit"));
         } catch (IOException e) {
             System.err.println("Unable to receive message on port \"" + port + "\".");
@@ -125,6 +139,13 @@ public class UDP_Chat {
         }
     }
 
+    private static void sendToAll(String message) {
+        for (Map.Entry<String, ClientInfo> entry : clients.entrySet()) {
+            sendLines(entry.getValue().ip, entry.getValue().port, message);
+            System.out.println("Sent \"" + message + "\" to " + entry.getKey() + ".");
+        }
+    }
+
     private static void register(String friend, int friends_port) {
         try {
             String ip = InetAddress.getLocalHost().getHostAddress();
@@ -132,6 +153,28 @@ public class UDP_Chat {
             sendLines(friend, friends_port, message);
         } catch (UnknownHostException e) {
             System.err.println("Unable to find client \"" + friend + "\".");
+        }
+    }
+
+    private static void updateClients() {
+        Iterator<Map.Entry<String, ClientInfo>> iterator = clients.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, ClientInfo> entry = iterator.next();
+            try {
+                sendLines(entry.getValue().ip, entry.getValue().port, "ping");
+            } catch (Exception e) {
+                iterator.remove();
+                System.out.println("Removed \"" + entry.getKey() + "\" from client list due to no response.");
+            }
+        }
+    }
+
+    private static void handlePredefinedQuestions(String message, String senderIp, int senderPort) {
+        for (Map.Entry<String, String> entry : predefinedQuestions.entrySet()) {
+            if (message.equalsIgnoreCase(entry.getKey())) {
+                sendLines(senderIp, senderPort, entry.getValue());
+                System.out.println("Responded to predefined question \"" + entry.getKey() + "\" with \"" + entry.getValue() + "\".");
+            }
         }
     }
 }

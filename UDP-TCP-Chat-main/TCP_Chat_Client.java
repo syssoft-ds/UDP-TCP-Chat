@@ -15,7 +15,7 @@ public class TCP_Chat_Client {
         System.exit(-1);
     }
 
-    public static boolean isIP(String ip) { // Checks if String is valid IPv4 address
+    public static boolean isIP(String ip) {
         return UDP_Chat.isIP(ip);
     }
 
@@ -45,7 +45,6 @@ public class TCP_Chat_Client {
              PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
              BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
              BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in))) {
-            // closes automatically
 
             new Thread(() -> {
                 try {
@@ -61,7 +60,7 @@ public class TCP_Chat_Client {
             // Register the client with the server
             out.println("register " + name);
 
-            System.out.println(name + " is connected to Server at IP " + serverIP + " on port " + serverPort + ".\nUse \"send <client name> <message>\" to send a message to a client.");
+            System.out.println(name + " is connected to Server at IP " + serverIP + " on port " + serverPort + ".\nUse \"send <client name> <message>\" to send a message to a client.\nUse \"sendall <message>\" to send a message to all clients.\nUse \"updateclients\" to update the client list.");
 
             String userInput;
             while ((userInput = stdIn.readLine()) != null) {
@@ -69,6 +68,12 @@ public class TCP_Chat_Client {
                 if (parts[0].equalsIgnoreCase("send") && parts.length == 3) {
                     out.println(userInput);
                     System.out.println("Message sent.");
+                } else if (parts[0].equalsIgnoreCase("sendall") && parts.length == 2) {
+                    out.println(userInput);
+                    System.out.println("Message sent to all clients.");
+                } else if (parts[0].equalsIgnoreCase("updateclients")) {
+                    out.println("updateclients");
+                    System.out.println("Client list update requested.");
                 } else {
                     System.err.println("Unknown command.");
                 }

@@ -1,0 +1,99 @@
+Analyse der gefundenen Pakete in Wireshark
+
+
+UDP-Paket
+IPv4-Header:
+
+Version: 4
+Gibt an, dass es sich um ein IPv4-Paket handelt.
+Header Length: 20 Bytes (5)
+Länge des IP-Headers in 32-Bit-Worten.
+Type of Service (Differentiated Services Field): 0x00
+Differentiated Services Codepoint (DSCP): 0
+Explicit Congestion Notification (ECN): 0
+Total Length: 684 Bytes
+Gesamtlänge des IP-Pakets inklusive Header und Daten.
+Identification: 0x1411 (41281)
+Eindeutige Identifikation des IP-Pakets.
+Flags: 0x0 (Keine Fragmentierung)
+Reserved bit: 0
+Don't fragment: 0
+More fragments: 0
+Fragment Offset: 0
+Offset des Fragments.
+Time to Live (TTL): 1
+Maximale Anzahl der Hops, die das Paket durchlaufen darf.
+Protocol: 17 (UDP)
+Protokoll, das in den Daten des IP-Pakets verwendet wird.
+Header Checksum: 0xc2f7
+Prüfsumme zur Fehlererkennung im IP-Header.
+Source Address: 136.199.218.70
+Quell-IP-Adresse des Pakets.
+Destination Address: 239.255.255.250
+Ziel-IP-Adresse des Pakets.
+UDP-Header:
+
+Source Port: 53383
+Quellport des UDP-Pakets.
+Destination Port: 3702
+Zielport des UDP-Pakets.
+Length: 656 Bytes
+Gesamtlänge des UDP-Pakets inklusive Header und Daten.
+Checksum: Nicht angegeben
+Prüfsumme zur Fehlererkennung im UDP-Paket.
+TCP-Paket
+IPv4-Header:
+
+Version: 4
+Gibt an, dass es sich um ein IPv4-Paket handelt.
+Header Length: 20 Bytes (5)
+Länge des IP-Headers in 32-Bit-Worten.
+Type of Service (Differentiated Services Field): 0x00
+Differentiated Services Codepoint (DSCP): 0
+Explicit Congestion Notification (ECN): 0
+Total Length: 60 Bytes
+Gesamtlänge des IP-Pakets inklusive Header und Daten.
+Identification: 0x47c6 (18374)
+Eindeutige Identifikation des IP-Pakets.
+Flags: 0x2 (Don't fragment)
+Reserved bit: 0
+Don't fragment: 1
+More fragments: 0
+Fragment Offset: 0
+Offset des Fragments.
+Time to Live (TTL): 102
+Maximale Anzahl der Hops, die das Paket durchlaufen darf.
+Protocol: 6 (TCP)
+Protokoll, das in den Daten des IP-Pakets verwendet wird.
+Header Checksum: 0x13dc
+Prüfsumme zur Fehlererkennung im IP-Header.
+Source Address: 20.42.65.94
+Quell-IP-Adresse des Pakets.
+Destination Address: 136.199.218.222
+Ziel-IP-Adresse des Pakets.
+
+
+
+
+
+TCP-Header:
+
+Source Port: 443
+Quellport des TCP-Pakets (HTTPS).
+Destination Port: 55704
+Zielport des TCP-Pakets.
+Sequence Number: 7014
+Sequenznummer des TCP-Pakets.
+Acknowledgment Number: 10051
+Bestätigungsnummer des TCP-Pakets.
+Header Length: 32 Bytes
+Länge des TCP-Headers.
+Flags: 0x10 (ACK)
+ACK: 1 (Bestätigungsfeld ist signifikant)
+Window Size: 4096
+Größe des Empfangsfensters.
+Checksum: 0x9dc8
+Prüfsumme zur Fehlererkennung im TCP-Paket.
+Urgent Pointer: 0
+Dringlichkeitspunkt (nicht gesetzt).
+Diese Kategorien helfen, die Struktur und die verschiedenen Felder von UDP- und TCP-Paketen in Wireshark zu verstehen.
