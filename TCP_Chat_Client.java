@@ -47,6 +47,7 @@ public class TCP_Chat_Client {
              BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in))) {
             // closes automatically
 
+
             new Thread(() -> {
                 try {
                     String fromServer;
@@ -69,8 +70,14 @@ public class TCP_Chat_Client {
                 if (parts[0].equalsIgnoreCase("send") && parts.length == 3) {
                     out.println(userInput);
                     System.out.println("Message sent.");
+                } else if (parts[0].equalsIgnoreCase("broadcast")) {
+                    out.println(userInput);
+                    System.out.println("Broadcast request sent.");
+                } else if (parts[0].equalsIgnoreCase("refreshList")) {
+                    out.println(userInput);
+                    System.out.println("refreshList request sent.");
                 } else {
-                    System.err.println("Unknown command.");
+                    System.err.println("Unknown command!");
                 }
             }
         } catch (UnknownHostException e) {

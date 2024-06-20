@@ -1,0 +1,4 @@
+Aufgabe 3:
+Prinzipiell ist es kein Problem zwischen zwei verschiedene Implementierungen eine Verbindung herzustellen, allerdings geht nicht jede Implementierung gleich mit den in einer Nachricht verpackten Informationen um, daher kann es sein das z.B. eine Register Aufforderung nicht funktioniert.
+
+Eine Lösung wäre diese wichtigen Punkte zu normen.

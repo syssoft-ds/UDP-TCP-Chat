@@ -1,0 +1,26 @@
+Aufgabe 1:
+IPv4
+Version = 4
+Header Length = 5
+Type of Service = 0x00 (Standard)
+Total Length = 49
+Identification = 0x0d8b (3467)
+Time to Live = 128
+Protocol = TCP (6)
+Header Checksum = 0x0000 
+Source IP Adresse und Destination Adress = 127.0.0.1
+
+UDP
+Source Port und Destination Port = 57621
+Length = 52
+Checksum = 0x067c
+
+TCP
+Source Port und Destination Port =  52484
+Sequence Number = 10
+Acknowledgment Number = 4
+Data Offset = 5
+Flags = 0x010 (ACK)
+Window Size = 10131
+Checksum = 0x09c8
+Urgent Pointer = 0
