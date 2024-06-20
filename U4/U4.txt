@@ -1,0 +1,78 @@
+Uebung 4 
+
+Aufgabe 1
+IPv4:
+Folgende Elemente gibt es im Header:
+
+Version: hat Binärwert 0100 = 4 für Version 4
+Header Length: hat Binärwert 0101 = 5; Länge des Headers, hier 4-Bytes * 5 = 20
+Differentiated Services Field: hat Hexadezimalwert 0x00, gibt Art des Service an
+Total Length: Gesamtlänge des IP-Pakets, hier 576 Bytes
+Identification: hat Hexadezimalwert 0xdb4e ID des Pakets
+Fragmentaion: Kennzeichnung für Fragmentierung; da das Fragmentation-Offset auf 0 gesetzt ist, wird nicht fragmentiert
+Time to Live: Anzahl maximlaer Weiterleitungen, hier Wert 111
+Protocol: Angabe des Protokolls, hier TCP
+Header Checksum: hier 0xa988, was für die Deaktivierung der Validierung steht
+Source Adress, Destination Adress: Sender und Empfänger des Pakets
+
+
+TCP:
+Folgende Elemente gibt es im Header:
+
+Source Port, Destination Port: Portnummern der Anwendungen bzw. Prozesse, wovon die Nachricht ausgehtbzw hingeht, hier 443, 27031
+Sequence Number: dient zur Sortierung der Pakete, Gewährleistet korrekte Zusammenfügen beim Empfänger
+Acknowlegement Number: Nummer, welcher der Absender der TCP-Kommunikation als nächstes erwartet
+Header Length: Länge des Headers, hier 20 Bytes
+Flags:Verschiedene Flags, die mögliche Zustände des TCP_Pakets anzeigen, hier sind PSH und ACK gesetzt
+Checksum: Prüfsumme, die der Fehlererkennung dient
+Urgent Pointer: Zeigt auf die Stelle im Datensegment, welche nach den wichtige Daten auftreten
+
+
+UDP:
+Folgende Elemente gibt es im Header:
+
+Source Port, Destination Port: wie in TCP
+Length: Länge des versendeten Paketes, hier 31 Bytes
+Checksum: wie in TCP
+
+
+
+Aufgabe 2:
+
+Bei 103.161.122.83/18 steht die 103.161.122.83 für die IP-Adresse.
+Die /18 gibt die Anzahl an Bits an, die von der IP-Adresse für die Netzwerkadresse reserviert werden. Die restlichen 14 Bits sind für Hosts im Netzwerk reserviert.
+
+Um die Subnetzmaske zu berechnen, setzt man die ersten 18 Bits deshalb auf 1:
+11111111.11111111.11000000.000000
+umgerechnet in dezimal: 255.255.192.0
+
+Die Netzwerkadresse erhält man, indem man die IP-Adresse bitweise mit der Subnetzmaske per UND verknüpft:
+IP-Adresse in binär: 01100111.10100001.01111010.01010011
+Subnetzmaske:        11111111.11111111.11000000.00000000
+= Netzwerkadresse:   01100111.10100001.01000000.00000000
+in dezimal: 103.161.64.0
+
+Die Broadcastadresse wird durch bitweise ODER-Verknüpfung der IP-Adresse mit der invertierten Subnetzmaske berechnet:
+IP-Adresse in binär:        01100111.10100001.01111010.01010011
+invertierte Subnetzmaske:   00000000.00000000.00111111.11111111
+= Broadcastadresse:         01100111.10100001.01111111.11111111
+in dezimal: 103.161.127.255
+
+103.161.193.83/18 liegt nicht im gleichen Netzwerk. um dies zu zeigen berechnet man die Netzwerkadresse und vergleich diese dann miteinander:
+
+IP-Adresse in binär: 01100111.10100001.11000001.01010011
+Subnetzmaske:        11111111.11111111.11000000.00000000
+= Netzwerkadresse:   01100111.10100001.11000000.00000000
+in dezimal: 103.161.192.0
+
+=> Die Netzwerkadressen sind unterschiedlich, also sind diese nicht im gleichen Netzwerk.
+
+
+Aufgabe 3:
+
+Bei den paar verschiedenen Implementationen, wo ich es versucht habe, zwei Ports miteinander kommunizieren zu lassen, kam es stest zu Problemen.
+Entweder finden sich die Ports erst gar nicht gegenseitig bzw. nur einseitig. Wenn es aber zwei Programme gibt, die dieses Problem nicht besitzen,
+kommen die Nachrichten aber nicht an.
+
+Eine Lösung ist es wie in Aufgabe 4 vor der Implementierung der verschiedenen Programme sich auf Spezifikationen zu einigen.
+
