@@ -7,3 +7,14 @@ Erläutern Sie die Unterschiede und Gemeinsamkeiten der Funktionsweisen der beid
 Nehmen sie nc_udp als Ausgangspunkt, und bauen Sie es zu einem Chatprogramm um. Jede Instanz des Programms soll einen Namen haben und sich bei einer anderen Instanz registrieren können (also so etwas wie „Hallo, hier ist Marvin, meine IP-Adresse ist die 192.168.0.42 und du kannst mich unter Port-Nummer 31337 erreichen.“). Anschließend sollen die Instanzen, die sich kennen, über einen Befehl „send name message“ sich gegenseitig Nachrichten senden können (name für den Ansprechpartner, message für die Nachricht). 
 
 Verändern Sie nc_tcp ebenfalls zu einem Chatprogramm. Allerdings soll die Registrierung der Instanzen hier über den Server ablaufen. Nach der Registrierung soll es den Instanzen jedoch auch hier möglich sein, sich gegenseitig mit „send name message“ Nachrichten zu senden. Beachten Sie hier, dass bei TCP über die gesamte Dauer des Sendens und Empfangens eine Verbindung bestehen muss. 
+
+# Bedienungsanleitung
+
+Bei programstart öffnet sich ein Fenster, hier kann man:
+  a) Einen Namen und Port für den Chatteilnemer festlegen
+  b) Den Server starten. Hierfür kann das Namensfeld leer gelassen werden.
+
+
+Jeder Chatclient muss sich über den "Connect" Button im File menu mit einem Server verbinden.
+  - Hier wird einmal die IP des Servers abgefragt. (Leerlassen = localhost)
+  - Und es wir der Port des Servers abgefragt.
