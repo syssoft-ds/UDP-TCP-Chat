@@ -1,0 +1,29 @@
+Unterschiede und Gemeinsamkeiten der TCP- und UDP-Programme basierend auf den Wireshark-Aufzeichnungen
+Gemeinsamkeiten:
+IP-Protokoll: Beide Pakete nutzen das IPv4-Protokoll zur Datenübertragung.
+Ports: Beide verwenden Quell- und Zielports, um die Kommunikation zwischen Client und Server zu ermöglichen.
+Unterschiede:
+TCP (Bild 1):
+
+Verbindungsorientierung: Das TCP-Paket zeigt Sequenz- und Bestätigungsnummern (Seq und Ack), was auf eine verbindungsorientierte Kommunikation hinweist.
+Größerer Header: TCP hat einen umfangreicheren Header für zusätzliche Steuerungsinformationen.
+Zuverlässigkeit: TCP stellt sicher, dass Daten korrekt ankommen, was durch die Präsenz von Flags und Bestätigungsnummern verdeutlicht wird.
+UDP (Bild 2):
+
+Verbindungslos: Das UDP-Paket zeigt keine Sequenz- oder Bestätigungsnummern, was auf eine verbindungslose Kommunikation hinweist.
+Kleinerer Header: Der UDP-Header ist deutlich einfacher und kleiner.
+Schnellere Übertragung: Da UDP keine Mechanismen zur Sicherstellung der Datenintegrität hat, ist die Übertragung schneller, aber weniger zuverlässig.
+Beispielhafte Paketanalyse in Wireshark
+TCP-Paket (Bild 1):
+
+Daten: Enthält eine größere Datenmenge (89 Bytes).
+Header-Informationen: Enthält Informationen wie Sequenznummer (Seq), Bestätigungsnummer (Ack) und Flags.
+Protokoll: TCP (Protokollnummer 6).
+UDP-Paket (Bild 2):
+
+Daten: Enthält eine kleinere Datenmenge (2 Bytes).
+Header-Informationen: Einfacher Header ohne Sequenz- oder Bestätigungsnummern.
+Protokoll: UDP (Protokollnummer 17).
+Fazit:
+TCP: Sorgt für eine zuverlässige und geordnete Datenübertragung durch den Einsatz von Sequenznummern und Bestätigungen.
+UDP: Bietet eine schnellere, aber weniger zuverlässige Übertragung ohne Verbindungsaufbau und Fehlerkorrektur.
