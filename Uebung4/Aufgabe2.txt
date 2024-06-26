@@ -1,0 +1,55 @@
+103.161.122.82/18 bedeuted das diese IPv4 Adresse eine subnetzmaske von 18 bits der rechten seite hat. Dies ist in der dezimalschreibweise nur schwer abzumessen, ergibt aber deutlich mehr sinn wenn man es in binär umwandelt:
+
+01100111.10100001.01111010.01010010
+
+die IPv4 adresse besteht aus 4 bytes/ 23 bit und die 18 rechten davon sind indikator der localen rechner einer subnetzmaske, welche durch die restlichen von links nach rechts definiert wird; in dem beispiel also:
+
+
+Subnetz (netzanteil) / Rechner im subnetz(Hostanteil)
+01100111.10100001.01 / 111010.01010010
+
+durch variable subnetzmasken kann man dann die selbe IP adresse an unterschiedliche rechner geben d.h.
+
+01100111.10100001.01 / 111010.01010010 ist ein anderer rechner als
+01100111.101000 / 01.01111010.01010010 da sie unterschiedlicher subnetze ansteuern
+
+
+
+
+
+die subnetzmaske findet man heraus in dem man den netzanteil auf 1 voll und den hostanteil auf 0 voll setzt.
+
+in unserem beispiel heisst es:
+
+11111111.11111111.11 / 000000.00000000
+
+oder in dotted decimal:
+
+255.255.192.0
+
+
+
+
+
+Die broadcastadresse ist immer durch den hostanteil alles auf 1 reserviert.
+
+die broadcast addresse von 103.161.122.82/18 mit subnetzmaske 255.255.192.0 wäre :
+
+
+103.161.122.82/18 -> 01100111.10100001.01 / 111010.01010010 -> 01100111.10100001.01 / 111111.11111111 -> 103.161.127.255/18
+
+Die broadcast adresse ist also 103.161.127.255/18 .
+
+
+
+
+
+103.161.122.82/18 im selben netz wie 103.161.193.83/18 ?
+
+(Wir sehen an der broadcast addresse das dies schon nicht der fall ist aber hier nochmal der korrekte weg)
+
+103.161.122.82/18 -> 01100111.10100001.01 / 111010.01010010
+
+103.161.193.83/18 -> 01100111.10100001.11 / 000001.01010011 
+
+Hier sieht man das sich der netzanteil um einen bit unterscheidet und somit liegen die rechner NICHT im selben subnetz!.
