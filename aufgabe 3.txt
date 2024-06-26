@@ -1,7 +1,0 @@
-UDP-Chat-Programm
-Bei der Kommunikation zwischen unserer eigenen UDP-Chat-Implementierung und der eines Kommilitonen gab es einige Probleme. Zuerst hatten wir unterschiedliche Formate für die Nachrichten, was dazu führte, dass Nachrichten nicht richtig erkannt oder verarbeitet wurden. Außerdem kam es gelegentlich zu Nachrichtenverlusten, da UDP keine zuverlässige Übertragung garantiert. Eine einfache Lösung wäre, sich auf ein gemeinsames Nachrichtenformat zu einigen und Bestätigungen für den Empfang einzubauen.
-
-TCP-Chat-Programm
-Beim Testen unserer TCP-Chat-Implementierung mit der eines Kommilitonen traten ebenfalls Probleme auf. Die Nachrichtenformate waren unterschiedlich, was dazu führte, dass Nachrichten nicht richtig gelesen wurden. Zudem gab es Schwierigkeiten beim Umgang mit Verbindungsabbrüchen. Eine mögliche Lösung wäre, sich auf ein einheitliches Nachrichtenformat zu einigen und die Verbindungshandhabung zu verbessern.
-
-In beiden Fällen haben wir festgestellt, dass unterschiedliche Nachrichtenformate und fehlende Standardisierung die Hauptprobleme waren. Ein einheitliches Format und einfache Mechanismen zur Fehlerbehandlung könnten diese Probleme lösen.
