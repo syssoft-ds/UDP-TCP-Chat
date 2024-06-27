@@ -1,3 +1,4 @@
+
 //funktionirt nicht vollständig
 import java.io.*;
 import java.net.*;
@@ -102,6 +103,7 @@ public class TCP_Chat_Server {
                     clientName = parts[1];
                     if (clients.containsKey(clientName)) {
                         clientName = clientName + (int) (Math.random() * 1000);
+
                     }
                     synchronized (clients) {
                         clients.put(clientName, clientInfo);
@@ -119,6 +121,7 @@ public class TCP_Chat_Server {
                     } else {
                         clientInfo.out.println("Unknown question.");
                     }
+
                 } else {
                     clientInfo.out.println("Unknown command.");
                 }
@@ -128,16 +131,3 @@ public class TCP_Chat_Server {
         }
         System.exit(0);
     }
-
-
-    private static void sendMessage(String sender, String recipient, String message) {
-        synchronized (clients) {
-            ClientInfo recipientInfo = clients.get(recipient);
-            if (recipientInfo != null) {
-                recipientInfo.out.println("Message from " + sender + ": " + message);
-            } else {
-                System.out.println("Client " + recipient + " not found.");
-            }
-        }
-    }
-}

@@ -1,3 +1,4 @@
+
 //funktionirt nicht vollständig
 import java.io.*;
 import java.net.*;
@@ -6,6 +7,7 @@ public class TCP_Chat_Client {
     private static String name = "Client1";
     private static String serverIP = "231.255.194.236";
     private static int serverPort = 1444;
+
 
     private static void fatal(String input) {
         System.err.println(input);
@@ -26,7 +28,6 @@ public class TCP_Chat_Client {
         out.println("set " + question + " " + answer);
         System.out.println("Predefined answer set for question: " + question);
     }
-
     public static boolean isIP(String ip) { // Checks if String is valid IPv4 address
         return UDP_Chat.isIP(ip);
     }
