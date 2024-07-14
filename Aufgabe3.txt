@@ -1,0 +1,5 @@
+Aufgabe 3:
+
+Das Problem:
+Verwendet wurde die Musterlösung und vom KommilitonInnen. 
+Es gab ein Problem damit, dass die Lösung des KommilitonInnen keinen Namen verwendet und sich damit die Registrierung ein Problem darstellt.

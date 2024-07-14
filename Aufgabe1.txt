@@ -1,0 +1,39 @@
+Aufgabe 1:
+
+IP-Protokoll (IPv4): genutzt im Wireshark wird der Filter 'ip'
+Paket wird analysiert:
+Header:
+Version: 4
+Header Length: 20 bytes (5)
+Type of service: 0x00 (DSCP: CS0, ECN: Not-ECT)
+Total Length: 1278
+identification: 0x6f2f
+Fragment offset(13): 0
+Time to live: 121
+protocol: UDP (17)
+Header checksum: 0xfe12 [validation disabled]
+source address: 88.54.115.27
+destination address: 231.255.194.236
+
+UDP-Protokoll: genutzt im Wireshark wird der Filter 'udp'
+Paket wird analysiert:
+Header:
+Source port: 443
+Destination port: 61897
+UDP length: 1278
+UDP checksum: 0xfe1b 
+
+TCP-Protokoll: genutzt im Wireshark wird der Filter 'tcp'
+Paket wird analysiert:
+Header:
+Source Port (16 Bit): 443
+Destination Port (16 Bit): 26217
+Sequence Number (32 Bit): 513
+Acknowledgement Number (32 Bit): 3982
+Header Length: 40
+Flags: 0x2, Don't fragment
+Window Size (16 Bit): 155648
+TCP Checksum (16 Bit): 0x79b9
+Urgent Pointer (16 Bit): 0
+Optionen (falls vorhanden): 1
+

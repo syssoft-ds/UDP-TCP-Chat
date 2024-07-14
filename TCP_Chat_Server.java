@@ -1,16 +1,13 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map;
+
+//funktionirt nicht vollständig
+import java.io.*;
+import java.net.*;
+import java.util.*;
 
 public class TCP_Chat_Server {
     private static final int port = 1444;
     private static final Map<String, ClientInfo> clients = new HashMap<>();
+    private static final Map<String, String> predefinedAnswers = new HashMap<>();
 
     private static class ClientInfo {
         Socket socket;
@@ -27,17 +24,70 @@ public class TCP_Chat_Server {
             }
         }
     }
+    private static void updateClientList(Socket sender) {
+        List<String> clientNames = new ArrayList<>();
+
+        Iterator<Map.Entry<String, ClientInfo>> iterator = clients.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, ClientInfo> entry = iterator.next();
+            Socket client = entry.getValue().socket;
+            if (!client.equals(sender)) {
+                try (BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()))) {
+                    clientNames.add(in.readLine());
+                } catch (IOException e) {
+                    System.err.println("Unable to read client name: " + e.getMessage());
+                }
+            }
+        }
+
+        try (PrintWriter out = new PrintWriter(sender.getOutputStream(), true)) {
+            out.println("clientlist: " + String.join(" ", clientNames));
+        } catch (IOException e) {
+            System.err.println("Unable to send client list: " + e.getMessage());
+        }
+    }
+    private static void broadcastMessage(String message, Socket sender) {
+        for (Map.Entry<String, ClientInfo> entry : clients.entrySet()) {
+            Socket client = entry.getValue().socket;
+            if (!client.equals(sender)) {
+                try (PrintWriter out = new PrintWriter(client.getOutputStream(), true)) {
+                    out.println(message);
+                } catch (IOException e) {
+                    System.err.println("Unable to send message to client: " + e.getMessage());
+                }
+            }
+        }
+    }
 
     public static void main(String[] args) {
-        try (ServerSocket serverSocket = new ServerSocket(port)) {
-            System.out.println("Server started on IP " + InetAddress.getLocalHost().getHostAddress() + " on Port " + port + ".\nUse \"quit\" to exit program.");
+        int serverPort = 1444;
+
+        try (ServerSocket serverSocket = new ServerSocket(serverPort)) {
+            System.out.println("Chat Server is listening on port " + serverPort);
 
             while (true) {
-                Socket clientSocket = serverSocket.accept();
-                new Thread(() -> handleClient(clientSocket)).start();
+                Socket socket = serverSocket.accept();
+                clients.put(socket.getInetAddress().toString(), new ClientInfo(socket));
+                predefinedAnswers.put("What is your MAC address?", "Your MAC address is: 00:0a:95:9d:68:16");
+                predefinedAnswers.put("Are carrots a good meal?", "Carrots are not a good meal.");
+
+                new Thread(new ClientHandler(socket)).start();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Unable to start the server: " + e.getMessage());
+        }
+    }
+
+    private static class ClientHandler implements Runnable {
+        private Socket socket;
+
+        ClientHandler(Socket socket) {
+            this.socket = socket;
+        }
+
+        @Override
+        public void run() {
+            handleClient(socket);
         }
     }
 
@@ -52,7 +102,8 @@ public class TCP_Chat_Server {
                 if (parts[0].equalsIgnoreCase("register") && parts.length == 2) {
                     clientName = parts[1];
                     if (clients.containsKey(clientName)) {
-                        clientName = clientName + (int) (Math.random() * 1000); // add random number if name is taken
+                        clientName = clientName + (int) (Math.random() * 1000);
+
                     }
                     synchronized (clients) {
                         clients.put(clientName, clientInfo);
@@ -62,6 +113,15 @@ public class TCP_Chat_Server {
                     String recipient = parts[1];
                     String message = parts[2];
                     sendMessage(clientName, recipient, message);
+                } else if (parts[0].equalsIgnoreCase("ask") && parts.length == 2) {
+                    String question = parts[1];
+                    String answer = predefinedAnswers.get(question);
+                    if (answer != null) {
+                        clientInfo.out.println("Predefined answer: " + answer);
+                    } else {
+                        clientInfo.out.println("Unknown question.");
+                    }
+
                 } else {
                     clientInfo.out.println("Unknown command.");
                 }
@@ -71,15 +131,3 @@ public class TCP_Chat_Server {
         }
         System.exit(0);
     }
-
-    private static void sendMessage(String sender, String recipient, String message) {
-        synchronized (clients) {
-            ClientInfo recipientInfo = clients.get(recipient);
-            if (recipientInfo != null) {
-                recipientInfo.out.println("Message from " + sender + ": " + message);
-            } else {
-                System.out.println("Client " + recipient + " not found.");
-            }
-        }
-    }
-}
